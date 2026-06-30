@@ -32,18 +32,56 @@ header h1 {
     color: #667eea;
 }
 
-.week-info {
+.week-navigation {
     display: flex;
     justify-content: center;
-    gap: 20px;
-    font-size: 1.1em;
-    color: #666;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 15px;
 }
 
-.week-info span {
+.week-navigation span {
+    font-size: 1.3em;
+    font-weight: 600;
+    color: #667eea;
+    min-width: 100px;
+    text-align: center;
+}
+
+.btn-week {
+    background: #667eea;
+    color: white;
+    border: none;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    font-size: 1.2em;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn-week:hover {
+    background: #5568d3;
+    transform: scale(1.1);
+}
+
+.btn-week:active {
+    transform: scale(0.95);
+}
+
+.day-info {
+    margin-top: 10px;
+}
+
+.day-info span {
     padding: 8px 16px;
     background: #f0f0f0;
     border-radius: 20px;
+    font-size: 1.1em;
+    color: #666;
 }
 
 main {
@@ -397,5 +435,240 @@ footer {
 
     footer {
         flex-direction: column;
+    }
+}
+
+/* Progress Summary Styles */
+.progress-summary {
+    background: white;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+}
+
+.progress-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 15px;
+}
+
+.progress-card {
+    background: #f9f9f9;
+    padding: 15px;
+    border-radius: 8px;
+    border-left: 4px solid #667eea;
+}
+
+.progress-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.progress-exercise {
+    font-weight: 600;
+    color: #333;
+    font-size: 0.95em;
+}
+
+.progress-gap {
+    font-weight: 600;
+    color: #ff5722;
+    font-size: 0.9em;
+}
+
+.progress-bar-container {
+    background: #e0e0e0;
+    height: 8px;
+    border-radius: 4px;
+    overflow: hidden;
+    margin-bottom: 10px;
+}
+
+.progress-bar {
+    height: 100%;
+    transition: width 0.3s ease;
+    border-radius: 4px;
+}
+
+.progress-stats {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.85em;
+    color: #666;
+}
+
+.progress-target {
+    color: #667eea;
+    font-weight: 500;
+}
+
+/* Exercise Card Enhancements */
+.exercise-card.collapsed {
+    padding: 15px 25px;
+}
+
+.exercise-header {
+    cursor: pointer;
+    user-select: none;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+    padding-bottom: 15px;
+    border-bottom: 2px solid #f0f0f0;
+}
+
+.exercise-header:hover {
+    background: #fafafa;
+    margin: -5px -10px 15px -10px;
+    padding: 5px 10px 20px 10px;
+    border-radius: 8px;
+}
+
+.exercise-header-left {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex: 1;
+}
+
+.exercise-header-right {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.collapse-icon {
+    font-size: 1.2em;
+    color: #667eea;
+    width: 20px;
+}
+
+.exercise-progress {
+    background: #e0e0e0;
+    color: #666;
+    padding: 4px 10px;
+    border-radius: 12px;
+    font-size: 0.85em;
+    font-weight: 600;
+}
+
+.exercise-progress.partial {
+    background: #fff3cd;
+    color: #856404;
+}
+
+.exercise-progress.complete {
+    background: #d4edda;
+    color: #155724;
+}
+
+.exercise-content {
+    animation: slideDown 0.3s ease;
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        max-height: 0;
+    }
+    to {
+        opacity: 1;
+        max-height: 2000px;
+    }
+}
+
+.exercise-targets {
+    display: flex;
+    gap: 15px;
+    background: #f0f4ff;
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    flex-wrap: wrap;
+}
+
+.target-item {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    flex: 1;
+    min-width: 100px;
+}
+
+.target-label {
+    font-size: 0.85em;
+    color: #666;
+    font-weight: 500;
+}
+
+.target-value {
+    font-size: 1.1em;
+    font-weight: 700;
+    color: #333;
+}
+
+.target-highlight {
+    color: #667eea;
+}
+
+.gap-negative {
+    color: #ff5722;
+}
+
+.gap-positive {
+    color: #4caf50;
+}
+
+/* Button Updates */
+.btn-completed {
+    background: #4caf50;
+    color: white;
+    padding: 8px 16px;
+    margin-left: auto;
+    cursor: default;
+}
+
+.btn-completed:hover {
+    background: #4caf50;
+}
+
+/* Mobile Enhancements */
+@media (max-width: 768px) {
+    .progress-cards {
+        grid-template-columns: 1fr;
+    }
+
+    .week-navigation span {
+        font-size: 1.1em;
+        min-width: 80px;
+    }
+
+    .btn-week {
+        width: 35px;
+        height: 35px;
+        font-size: 1em;
+    }
+
+    .exercise-targets {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .target-item {
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .exercise-header-left {
+        flex-wrap: wrap;
+    }
+
+    .exercise-header-left h3 {
+        font-size: 1.2em;
     }
 }

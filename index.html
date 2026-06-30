@@ -10,13 +10,21 @@
     <div class="container">
         <header>
             <h1>🏋️ Training Tracker</h1>
-            <div class="week-info">
+            <div class="week-navigation">
+                <button id="prevWeekBtn" class="btn-week">◀</button>
                 <span id="currentWeek">Week 1</span>
+                <button id="nextWeekBtn" class="btn-week">▶</button>
+            </div>
+            <div class="day-info">
                 <span id="currentDay">Day 1: Leg Strength</span>
             </div>
         </header>
 
         <main>
+            <div id="progressSummary" class="progress-summary">
+                <!-- Progress summary will be loaded here -->
+            </div>
+            
             <div id="workoutContainer">
                 <!-- Workout will be dynamically loaded here -->
             </div>
