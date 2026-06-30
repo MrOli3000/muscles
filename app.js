@@ -7,6 +7,7 @@ class TrainingTracker {
         this.collapsedExercises = new Set();
         this.loadWorkoutData();
         this.init();
+        this.collapseAllExercises();
     }
 
     init() {
@@ -166,6 +167,16 @@ class TrainingTracker {
         document.getElementById('workoutContainer').innerHTML = html;
     }
 
+    collapseAllExercises() {
+        const workout = this.getCurrentWorkout();
+        if (workout) {
+            workout.exercises.forEach((_, exerciseIndex) => {
+                const key = `${this.currentWeek}-${this.currentDay}-${exerciseIndex}`;
+                this.collapsedExercises.add(key);
+            });
+        }
+    }
+
     toggleExercise(exerciseIndex) {
         const key = `${this.currentWeek}-${this.currentDay}-${exerciseIndex}`;
         if (this.collapsedExercises.has(key)) {
@@ -297,6 +308,7 @@ class TrainingTracker {
 
         this.saveProgress('currentWeek', this.currentWeek);
         this.saveProgress('currentDay', this.currentDay);
+        this.collapseAllExercises();
         this.renderWorkout();
     }
 
@@ -316,6 +328,7 @@ class TrainingTracker {
 
         this.saveProgress('currentWeek', this.currentWeek);
         this.saveProgress('currentDay', this.currentDay);
+        this.collapseAllExercises();
         this.renderWorkout();
     }
 
@@ -328,6 +341,7 @@ class TrainingTracker {
             }
             this.saveProgress('currentWeek', this.currentWeek);
             this.saveProgress('currentDay', this.currentDay);
+            this.collapseAllExercises();
             this.renderWorkout();
         } else {
             alert('Already at the last week');
@@ -343,6 +357,7 @@ class TrainingTracker {
             }
             this.saveProgress('currentWeek', this.currentWeek);
             this.saveProgress('currentDay', this.currentDay);
+            this.collapseAllExercises();
             this.renderWorkout();
         } else {
             alert('Already at the first week');

@@ -20,10 +20,10 @@ const trainingProgram = {
                             targetRIR: 2,
                             rest: "3-5 min after top set, 2-3 min between backoff sets",
                             sets: [
-                                { type: "Top Set", weight: 100, reps: 2, completed: false, actualWeight: null, actualReps: null, rpe: null, rir: null },
-                                { type: "Backoff", weight: 80, reps: 5, completed: false, actualWeight: null, actualReps: null, rpe: null, rir: null },
-                                { type: "Backoff", weight: 80, reps: 5, completed: false, actualWeight: null, actualReps: null, rpe: null, rir: null },
-                                { type: "Backoff", weight: 80, reps: 5, completed: false, actualWeight: null, actualReps: null, rpe: null, rir: null }
+                                { type: "Top Set", weight: 100, reps: 2, completed: true, actualWeight: 100, actualReps: 2, rpe: 8, rir: 2 },
+                                { type: "Backoff", weight: 80, reps: 5, completed: true, actualWeight: 80, actualReps: 5, rpe: 7.5, rir: 4 },
+                                { type: "Backoff", weight: 80, reps: 5, completed: true, actualWeight: 80, actualReps: 5, rpe: 7.5, rir: 4 },
+                                { type: "Backoff", weight: 80, reps: 5, completed: true, actualWeight: 80, actualReps: 5, rpe: 7.5, rir: 5 }
                             ]
                         },
                         {
@@ -36,10 +36,10 @@ const trainingProgram = {
                             targetRIR: 2,
                             rest: "2-3 mins",
                             sets: [
-                                { type: "Working", weight: 85, reps: 8, completed: false, actualWeight: null, actualReps: null, rpe: null, rir: null },
-                                { type: "Working", weight: 85, reps: 8, completed: false, actualWeight: null, actualReps: null, rpe: null, rir: null },
-                                { type: "Working", weight: 85, reps: 8, completed: false, actualWeight: null, actualReps: null, rpe: null, rir: null },
-                                { type: "Working", weight: 85, reps: 8, completed: false, actualWeight: null, actualReps: null, rpe: null, rir: null }
+                                { type: "Working", weight: 85, reps: 8, completed: true, actualWeight: 85, actualReps: 8, rpe: 8, rir: 2 },
+                                { type: "Working", weight: 85, reps: 8, completed: true, actualWeight: 85, actualReps: 8, rpe: 8, rir: 2 },
+                                { type: "Working", weight: 85, reps: 8, completed: true, actualWeight: 85, actualReps: 8, rpe: 8, rir: 1 },
+                                { type: "Working", weight: 85, reps: 8, completed: true, actualWeight: 85, actualReps: 8, rpe: 8, rir: 1 }
                             ]
                         },
                         {
@@ -52,10 +52,10 @@ const trainingProgram = {
                             targetRIR: 3,
                             rest: "2-3 mins",
                             sets: [
-                                { type: "Working", weight: 50, reps: 12, completed: false, actualWeight: null, actualReps: null, rpe: null, rir: null },
-                                { type: "Working", weight: 50, reps: 12, completed: false, actualWeight: null, actualReps: null, rpe: null, rir: null },
-                                { type: "Working", weight: 50, reps: 12, completed: false, actualWeight: null, actualReps: null, rpe: null, rir: null },
-                                { type: "Working", weight: 50, reps: 12, completed: false, actualWeight: null, actualReps: null, rpe: null, rir: null }
+                                { type: "Working", weight: 50, reps: 12, completed: true, actualWeight: 50, actualReps: 12, rpe: 6.5, rir: 6 },
+                                { type: "Working", weight: 50, reps: 12, completed: true, actualWeight: 50, actualReps: 12, rpe: 6.5, rir: 6 },
+                                { type: "Working", weight: 50, reps: 12, completed: true, actualWeight: 50, actualReps: 12, rpe: 6.5, rir: 5 },
+                                { type: "Working", weight: 50, reps: 12, completed: true, actualWeight: 50, actualReps: 12, rpe: 7, rir: 5 }
                             ]
                         }
                     ]
@@ -76,10 +76,10 @@ const trainingProgram = {
                             targetRIR: 2,
                             rest: "3-5 min after top set, 2-3 min between backoff sets",
                             sets: [
-                                { type: "Top Set", weight: 55, reps: 2, completed: false, actualWeight: null, actualReps: null, rpe: null, rir: null },
-                                { type: "Backoff", weight: 45, reps: 5, completed: false, actualWeight: null, actualReps: null, rpe: null, rir: null },
-                                { type: "Backoff", weight: 45, reps: 5, completed: false, actualWeight: null, actualReps: null, rpe: null, rir: null },
-                                { type: "Backoff", weight: 45, reps: 5, completed: false, actualWeight: null, actualReps: null, rpe: null, rir: null }
+                                { type: "Top Set", weight: 55, reps: 2, completed: true, actualWeight: 55, actualReps: 2, rpe: 8, rir: 2 },
+                                { type: "Backoff", weight: 45, reps: 5, completed: true, actualWeight: 45, actualReps: 5, rpe: 7.5, rir: 3 },
+                                { type: "Backoff", weight: 45, reps: 5, completed: true, actualWeight: 45, actualReps: 5, rpe: 7.5, rir: 3 },
+                                { type: "Backoff", weight: 45, reps: 5, completed: true, actualWeight: 45, actualReps: 5, rpe: 7.5, rir: 3 }
                             ]
                         },
                         {
@@ -92,10 +92,10 @@ const trainingProgram = {
                             targetRIR: 3,
                             rest: "2-3 mins",
                             sets: [
-                                { type: "Working", weight: 80, reps: 8, completed: false, actualWeight: null, actualReps: null, rpe: null, rir: null },
-                                { type: "Working", weight: 80, reps: 8, completed: false, actualWeight: null, actualReps: null, rpe: null, rir: null },
-                                { type: "Working", weight: 80, reps: 8, completed: false, actualWeight: null, actualReps: null, rpe: null, rir: null },
-                                { type: "Working", weight: 80, reps: 8, completed: false, actualWeight: null, actualReps: null, rpe: null, rir: null }
+                                { type: "Working", weight: 80, reps: 8, completed: true, actualWeight: 80, actualReps: 8, rpe: 8, rir: 3 },
+                                { type: "Working", weight: 80, reps: 8, completed: true, actualWeight: 80, actualReps: 8, rpe: 8, rir: 3 },
+                                { type: "Working", weight: 80, reps: 8, completed: true, actualWeight: 80, actualReps: 8, rpe: 8, rir: 3 },
+                                { type: "Working", weight: 80, reps: 8, completed: true, actualWeight: 80, actualReps: 8, rpe: 8, rir: 3 }
                             ]
                         },
                         {
@@ -108,10 +108,10 @@ const trainingProgram = {
                             targetRIR: 5,
                             rest: "2-3 mins",
                             sets: [
-                                { type: "Working", weight: 22.5, reps: 12, completed: false, actualWeight: null, actualReps: null, rpe: null, rir: null },
-                                { type: "Working", weight: 22.5, reps: 12, completed: false, actualWeight: null, actualReps: null, rpe: null, rir: null },
-                                { type: "Working", weight: 22.5, reps: 12, completed: false, actualWeight: null, actualReps: null, rpe: null, rir: null },
-                                { type: "Working", weight: 22.5, reps: 12, completed: false, actualWeight: null, actualReps: null, rpe: null, rir: null }
+                                { type: "Working", weight: 22.5, reps: 12, completed: true, actualWeight: 22.5, actualReps: 12, rpe: 6, rir: 5 },
+                                { type: "Working", weight: 22.5, reps: 12, completed: true, actualWeight: 22.5, actualReps: 12, rpe: 6, rir: 5 },
+                                { type: "Working", weight: 22.5, reps: 12, completed: true, actualWeight: 22.5, actualReps: 12, rpe: 6, rir: 5 },
+                                { type: "Working", weight: 22.5, reps: 12, completed: true, actualWeight: 22.5, actualReps: 12, rpe: 6, rir: 5 }
                             ]
                         }
                     ]
@@ -132,10 +132,10 @@ const trainingProgram = {
                             targetRIR: 2,
                             rest: "3-5 min after top set, 2-3 min between backoff sets",
                             sets: [
-                                { type: "Top Set", weight: 22.5, reps: 2, completed: false, actualWeight: null, actualReps: null, rpe: null, rir: null },
-                                { type: "Backoff", weight: 18.75, reps: 5, completed: false, actualWeight: null, actualReps: null, rpe: null, rir: null },
-                                { type: "Backoff", weight: 18.75, reps: 5, completed: false, actualWeight: null, actualReps: null, rpe: null, rir: null },
-                                { type: "Backoff", weight: 18.75, reps: 5, completed: false, actualWeight: null, actualReps: null, rpe: null, rir: null }
+                                { type: "Top Set", weight: 22.5, reps: 2, completed: true, actualWeight: 22.5, actualReps: 2, rpe: 7, rir: 3 },
+                                { type: "Backoff", weight: 18.75, reps: 5, completed: true, actualWeight: 18.75, actualReps: 5, rpe: 8.5, rir: 1 },
+                                { type: "Backoff", weight: 18.75, reps: 5, completed: true, actualWeight: 18.75, actualReps: 5, rpe: 8.5, rir: 2 },
+                                { type: "Backoff", weight: 18.75, reps: 5, completed: true, actualWeight: 18.75, actualReps: 5, rpe: 8.5, rir: 2 }
                             ]
                         },
                         {
@@ -148,10 +148,10 @@ const trainingProgram = {
                             targetRIR: 2,
                             rest: "2-3 mins",
                             sets: [
-                                { type: "Working", weight: 40, reps: 8, completed: false, actualWeight: null, actualReps: null, rpe: null, rir: null },
-                                { type: "Working", weight: 40, reps: 8, completed: false, actualWeight: null, actualReps: null, rpe: null, rir: null },
-                                { type: "Working", weight: 40, reps: 8, completed: false, actualWeight: null, actualReps: null, rpe: null, rir: null },
-                                { type: "Working", weight: 40, reps: 8, completed: false, actualWeight: null, actualReps: null, rpe: null, rir: null }
+                                { type: "Working", weight: 40, reps: 8, completed: true, actualWeight: 40, actualReps: 8, rpe: 8, rir: 2 },
+                                { type: "Working", weight: 40, reps: 8, completed: true, actualWeight: 40, actualReps: 8, rpe: 8, rir: 2 },
+                                { type: "Working", weight: 40, reps: 8, completed: true, actualWeight: 40, actualReps: 8, rpe: 8, rir: 1 },
+                                { type: "Working", weight: 40, reps: 8, completed: true, actualWeight: 40, actualReps: 8, rpe: 8, rir: 1 }
                             ]
                         },
                         {
@@ -164,9 +164,9 @@ const trainingProgram = {
                             targetRIR: 3,
                             rest: "2-3 mins",
                             sets: [
-                                { type: "Working", weight: 70, reps: 12, completed: false, actualWeight: null, actualReps: null, rpe: null, rir: null },
-                                { type: "Working", weight: 70, reps: 12, completed: false, actualWeight: null, actualReps: null, rpe: null, rir: null },
-                                { type: "Working", weight: 70, reps: 12, completed: false, actualWeight: null, actualReps: null, rpe: null, rir: null }
+                                { type: "Working", weight: 70, reps: 12, completed: true, actualWeight: 70, actualReps: 12, rpe: 7, rir: 3 },
+                                { type: "Working", weight: 70, reps: 12, completed: true, actualWeight: 70, actualReps: 12, rpe: 7, rir: 3 },
+                                { type: "Working", weight: 70, reps: 12, completed: true, actualWeight: 70, actualReps: 12, rpe: 7, rir: 3 }
                             ]
                         }
                     ]
@@ -192,10 +192,10 @@ const trainingProgram = {
                             targetRIR: 2,
                             rest: "3-5 min after top set, 2-3 min between backoff sets",
                             sets: [
-                                { type: "Top Set", weight: 100, reps: 2, completed: false, actualWeight: null, actualReps: null, rpe: null, rir: null },
-                                { type: "Backoff", weight: 80, reps: 5, completed: false, actualWeight: null, actualReps: null, rpe: null, rir: null },
-                                { type: "Backoff", weight: 80, reps: 5, completed: false, actualWeight: null, actualReps: null, rpe: null, rir: null },
-                                { type: "Backoff", weight: 80, reps: 5, completed: false, actualWeight: null, actualReps: null, rpe: null, rir: null }
+                                { type: "Top Set", weight: 100, reps: 2, completed: true, actualWeight: 100, actualReps: 2, rpe: 8, rir: 2 },
+                                { type: "Backoff", weight: 80, reps: 5, completed: true, actualWeight: 80, actualReps: 5, rpe: 7, rir: 3 },
+                                { type: "Backoff", weight: 80, reps: 5, completed: true, actualWeight: 80, actualReps: 5, rpe: 7, rir: 3 },
+                                { type: "Backoff", weight: 80, reps: 5, completed: true, actualWeight: 80, actualReps: 5, rpe: 7, rir: 4 }
                             ]
                         },
                         {
@@ -208,10 +208,10 @@ const trainingProgram = {
                             targetRIR: 1,
                             rest: "2-3 mins",
                             sets: [
-                                { type: "Working", weight: 85, reps: 8, completed: false, actualWeight: null, actualReps: null, rpe: null, rir: null },
-                                { type: "Working", weight: 85, reps: 8, completed: false, actualWeight: null, actualReps: null, rpe: null, rir: null },
-                                { type: "Working", weight: 85, reps: 8, completed: false, actualWeight: null, actualReps: null, rpe: null, rir: null },
-                                { type: "Working", weight: 85, reps: 8, completed: false, actualWeight: null, actualReps: null, rpe: null, rir: null }
+                                { type: "Working", weight: 85, reps: 8, completed: true, actualWeight: 85, actualReps: 8, rpe: 9, rir: 1 },
+                                { type: "Working", weight: 85, reps: 8, completed: true, actualWeight: 85, actualReps: 8, rpe: 9, rir: 1 },
+                                { type: "Working", weight: 85, reps: 8, completed: true, actualWeight: 85, actualReps: 8, rpe: 9, rir: 1 },
+                                { type: "Working", weight: 85, reps: 8, completed: true, actualWeight: 85, actualReps: 8, rpe: 9, rir: 1 }
                             ]
                         },
                         {
@@ -224,10 +224,10 @@ const trainingProgram = {
                             targetRIR: 3,
                             rest: "2-3 mins",
                             sets: [
-                                { type: "Working", weight: 52.5, reps: 12, completed: false, actualWeight: null, actualReps: null, rpe: null, rir: null },
-                                { type: "Working", weight: 52.5, reps: 12, completed: false, actualWeight: null, actualReps: null, rpe: null, rir: null },
-                                { type: "Working", weight: 52.5, reps: 12, completed: false, actualWeight: null, actualReps: null, rpe: null, rir: null },
-                                { type: "Working", weight: 52.5, reps: 8, completed: false, actualWeight: null, actualReps: null, rpe: null, rir: null }
+                                { type: "Working", weight: 52.5, reps: 12, completed: true, actualWeight: 52.5, actualReps: 12, rpe: 7, rir: 3 },
+                                { type: "Working", weight: 52.5, reps: 12, completed: true, actualWeight: 52.5, actualReps: 12, rpe: 7, rir: 3 },
+                                { type: "Working", weight: 52.5, reps: 12, completed: true, actualWeight: 52.5, actualReps: 12, rpe: 7, rir: 3 },
+                                { type: "Working", weight: 52.5, reps: 8, completed: true, actualWeight: 52.5, actualReps: 8, rpe: 7, rir: 3 }
                             ]
                         }
                     ]
@@ -248,10 +248,10 @@ const trainingProgram = {
                             targetRIR: 2,
                             rest: "3-5 min after top set, 2-3 min between backoff sets",
                             sets: [
-                                { type: "Top Set", weight: 55, reps: 2, completed: false, actualWeight: null, actualReps: null, rpe: null, rir: null },
-                                { type: "Backoff", weight: 45, reps: 5, completed: false, actualWeight: null, actualReps: null, rpe: null, rir: null },
-                                { type: "Backoff", weight: 45, reps: 5, completed: false, actualWeight: null, actualReps: null, rpe: null, rir: null },
-                                { type: "Backoff", weight: 45, reps: 5, completed: false, actualWeight: null, actualReps: null, rpe: null, rir: null }
+                                { type: "Top Set", weight: 55, reps: 2, completed: true, actualWeight: 55, actualReps: 2, rpe: 8, rir: 2 },
+                                { type: "Backoff", weight: 45, reps: 5, completed: true, actualWeight: 45, actualReps: 5, rpe: 7.5, rir: 3 },
+                                { type: "Backoff", weight: 45, reps: 5, completed: true, actualWeight: 45, actualReps: 5, rpe: 7.5, rir: 3 },
+                                { type: "Backoff", weight: 45, reps: 5, completed: true, actualWeight: 45, actualReps: 5, rpe: 7.5, rir: 3 }
                             ]
                         },
                         {
@@ -264,7 +264,7 @@ const trainingProgram = {
                             targetRIR: 4,
                             rest: "2-3 mins",
                             sets: [
-                                { type: "Working", weight: 80, reps: 5, completed: false, actualWeight: null, actualReps: null, rpe: null, rir: null }
+                                { type: "Working", weight: 80, reps: 5, completed: true, actualWeight: 80, actualReps: 5, rpe: 7, rir: 4 }
                             ]
                         },
                         {
@@ -277,10 +277,10 @@ const trainingProgram = {
                             targetRIR: 5,
                             rest: "2-3 mins",
                             sets: [
-                                { type: "Working", weight: 22.5, reps: 12, completed: false, actualWeight: null, actualReps: null, rpe: null, rir: null },
-                                { type: "Working", weight: 22.5, reps: 12, completed: false, actualWeight: null, actualReps: null, rpe: null, rir: null },
-                                { type: "Working", weight: 22.5, reps: 12, completed: false, actualWeight: null, actualReps: null, rpe: null, rir: null },
-                                { type: "Working", weight: 22.5, reps: 12, completed: false, actualWeight: null, actualReps: null, rpe: null, rir: null }
+                                { type: "Working", weight: 22.5, reps: 12, completed: true, actualWeight: 22.5, actualReps: 12, rpe: 7, rir: 5 },
+                                { type: "Working", weight: 22.5, reps: 12, completed: true, actualWeight: 22.5, actualReps: 12, rpe: 7, rir: 5 },
+                                { type: "Working", weight: 22.5, reps: 12, completed: true, actualWeight: 22.5, actualReps: 12, rpe: 7, rir: 5 },
+                                { type: "Working", weight: 22.5, reps: 12, completed: true, actualWeight: 22.5, actualReps: 12, rpe: 7, rir: 5 }
                             ]
                         }
                     ]
@@ -301,10 +301,10 @@ const trainingProgram = {
                             targetRIR: 1,
                             rest: "3-5 min after top set, 2-3 min between backoff sets",
                             sets: [
-                                { type: "Top Set", weight: 25, reps: 2, completed: false, actualWeight: null, actualReps: null, rpe: null, rir: null },
-                                { type: "Backoff", weight: 15, reps: 5, completed: false, actualWeight: null, actualReps: null, rpe: null, rir: null },
-                                { type: "Backoff", weight: 15, reps: 5, completed: false, actualWeight: null, actualReps: null, rpe: null, rir: null },
-                                { type: "Backoff", weight: 15, reps: 5, completed: false, actualWeight: null, actualReps: null, rpe: null, rir: null }
+                                { type: "Top Set", weight: 25, reps: 2, completed: true, actualWeight: 25, actualReps: 2, rpe: 9, rir: 1 },
+                                { type: "Backoff", weight: 15, reps: 5, completed: true, actualWeight: 15, actualReps: 5, rpe: 7.5, rir: 2 },
+                                { type: "Backoff", weight: 15, reps: 5, completed: true, actualWeight: 15, actualReps: 5, rpe: 7.5, rir: 3 },
+                                { type: "Backoff", weight: 15, reps: 5, completed: true, actualWeight: 15, actualReps: 5, rpe: 7.5, rir: 3 }
                             ]
                         },
                         {
@@ -317,10 +317,10 @@ const trainingProgram = {
                             targetRIR: 3,
                             rest: "2-3 mins",
                             sets: [
-                                { type: "Working", weight: 40, reps: 8, completed: false, actualWeight: null, actualReps: null, rpe: null, rir: null },
-                                { type: "Working", weight: 40, reps: 8, completed: false, actualWeight: null, actualReps: null, rpe: null, rir: null },
-                                { type: "Working", weight: 40, reps: 8, completed: false, actualWeight: null, actualReps: null, rpe: null, rir: null },
-                                { type: "Working", weight: 40, reps: 8, completed: false, actualWeight: null, actualReps: null, rpe: null, rir: null }
+                                { type: "Working", weight: 40, reps: 8, completed: true, actualWeight: 40, actualReps: 8, rpe: 7, rir: 3 },
+                                { type: "Working", weight: 40, reps: 8, completed: true, actualWeight: 40, actualReps: 8, rpe: 7, rir: 3 },
+                                { type: "Working", weight: 40, reps: 8, completed: true, actualWeight: 40, actualReps: 8, rpe: 7, rir: 3 },
+                                { type: "Working", weight: 40, reps: 8, completed: true, actualWeight: 40, actualReps: 8, rpe: 7, rir: 3 }
                             ]
                         },
                         {
