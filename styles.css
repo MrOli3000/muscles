@@ -73,16 +73,44 @@ header h1 {
     transform: scale(0.95);
 }
 
-.day-info {
+.day-navigation {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
     margin-top: 10px;
 }
 
-.day-info span {
-    padding: 8px 16px;
-    background: #f0f0f0;
-    border-radius: 20px;
-    font-size: 1.1em;
-    color: #666;
+.day-navigation span {
+    font-size: 1em;
+    font-weight: 500;
+    color: #555;
+    min-width: 180px;
+    text-align: center;
+}
+
+.btn-day {
+    background: #764ba2;
+    color: white;
+    border: none;
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    font-size: 1em;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn-day:hover {
+    background: #6a3d8f;
+    transform: scale(1.1);
+}
+
+.btn-day:active {
+    transform: scale(0.95);
 }
 
 main {

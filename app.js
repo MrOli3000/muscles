@@ -413,8 +413,10 @@ class TrainingTracker {
     attachEventListeners() {
         document.getElementById('nextDayBtn').addEventListener('click', () => this.nextDay());
         document.getElementById('prevDayBtn').addEventListener('click', () => this.prevDay());
-        document.getElementById('nextWeekBtn').addEventListener('click', () => this.nextWeek());
-        document.getElementById('prevWeekBtn').addEventListener('click', () => this.prevWeek());
+        document.getElementById('nextDayBtnTop').addEventListener('click', () => this.nextDay());
+        document.getElementById('prevDayBtnTop').addEventListener('click', () => this.prevDay());
+        document.getElementById('nextWeekBtnTop').addEventListener('click', () => this.nextWeek());
+        document.getElementById('prevWeekBtnTop').addEventListener('click', () => this.prevWeek());
         document.getElementById('resetBtn').addEventListener('click', () => this.reset());
         document.getElementById('viewHistoryBtn').addEventListener('click', () => this.showHistory());
 

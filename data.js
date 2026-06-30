@@ -346,6 +346,62 @@ const trainingProgram = {
             weekNumber: 3,
             days: [
                 {
+                    dayNumber: 1,
+                    name: "Leg Strength",
+                    focus: ["Leg strength", "Pull hyp", "Push endurance"],
+                    exercises: [
+                        {
+                            name: "Back Squat",
+                            type: "Strength (Top Set + Backoff)",
+                            currentRM: 115,
+                            targetRM: 130,
+                            warmup: "20x8, 40x8, 60x8, 70x5, 90x2",
+                            prescription: "TS: 102.5kg x 2 reps, BO: 82.5kg x 5 reps x 3 sets",
+                            targetRPE: 8,
+                            targetRIR: 2,
+                            rest: "3-5 min after top set, 2-3 min between backoff sets",
+                            sets: [
+                                { type: "Top Set", weight: 102.5, reps: 2, completed: false, actualWeight: null, actualReps: null, rpe: null, rir: null },
+                                { type: "Backoff", weight: 82.5, reps: 5, completed: false, actualWeight: null, actualReps: null, rpe: null, rir: null },
+                                { type: "Backoff", weight: 82.5, reps: 5, completed: false, actualWeight: null, actualReps: null, rpe: null, rir: null },
+                                { type: "Backoff", weight: 82.5, reps: 5, completed: false, actualWeight: null, actualReps: null, rpe: null, rir: null }
+                            ]
+                        },
+                        {
+                            name: "Weighted Pull Ups",
+                            type: "Hypertrophy",
+                            currentRM: 100,
+                            targetRM: 105,
+                            prescription: "87.5kg x 8 reps x 2-4 sets",
+                            targetRPE: 8,
+                            targetRIR: 2,
+                            rest: "2-3 mins",
+                            sets: [
+                                { type: "Working", weight: 87.5, reps: 8, completed: false, actualWeight: null, actualReps: null, rpe: null, rir: null },
+                                { type: "Working", weight: 87.5, reps: 8, completed: false, actualWeight: null, actualReps: null, rpe: null, rir: null },
+                                { type: "Working", weight: 87.5, reps: 8, completed: false, actualWeight: null, actualReps: null, rpe: null, rir: null },
+                                { type: "Working", weight: 87.5, reps: 8, completed: false, actualWeight: null, actualReps: null, rpe: null, rir: null }
+                            ]
+                        },
+                        {
+                            name: "Bench Press",
+                            type: "Endurance",
+                            currentRM: 75,
+                            targetRM: 91,
+                            prescription: "55kg x 12 reps x 4 sets",
+                            targetRPE: 7,
+                            targetRIR: 3,
+                            rest: "2-3 mins",
+                            sets: [
+                                { type: "Working", weight: 55, reps: 12, completed: false, actualWeight: null, actualReps: null, rpe: null, rir: null },
+                                { type: "Working", weight: 55, reps: 12, completed: false, actualWeight: null, actualReps: null, rpe: null, rir: null },
+                                { type: "Working", weight: 55, reps: 12, completed: false, actualWeight: null, actualReps: null, rpe: null, rir: null },
+                                { type: "Working", weight: 55, reps: 12, completed: false, actualWeight: null, actualReps: null, rpe: null, rir: null }
+                            ]
+                        }
+                    ]
+                },
+                {
                     dayNumber: 2,
                     name: "Push Strength",
                     focus: ["Push strength", "Leg hypertrophy", "Pull endurance"],
@@ -399,8 +455,254 @@ const trainingProgram = {
                             ]
                         }
                     ]
+                },
+                {
+                    dayNumber: 3,
+                    name: "Pull Strength",
+                    focus: ["Pull strength", "Push hypertrophy", "Leg endurance"],
+                    exercises: [
+                        {
+                            name: "Weighted Pull Ups",
+                            type: "Strength (Top Set + Backoff)",
+                            currentRM: 100,
+                            targetRM: 105,
+                            warmup: "BW x 8, 10kg x 5, 15kg x 2",
+                            prescription: "TS: 27.5kg x 2 reps, BO: 17.5kg x 5 reps x 3 sets",
+                            targetRPE: 8,
+                            targetRIR: 2,
+                            rest: "3-5 min after top set, 2-3 min between backoff sets",
+                            sets: [
+                                { type: "Top Set", weight: 27.5, reps: 2, completed: false, actualWeight: null, actualReps: null, rpe: null, rir: null },
+                                { type: "Backoff", weight: 17.5, reps: 5, completed: false, actualWeight: null, actualReps: null, rpe: null, rir: null },
+                                { type: "Backoff", weight: 17.5, reps: 5, completed: false, actualWeight: null, actualReps: null, rpe: null, rir: null },
+                                { type: "Backoff", weight: 17.5, reps: 5, completed: false, actualWeight: null, actualReps: null, rpe: null, rir: null }
+                            ]
+                        },
+                        {
+                            name: "Strict Press",
+                            type: "Hypertrophy",
+                            currentRM: 57.5,
+                            targetRM: 70,
+                            prescription: "42.5kg x 8 reps x 4 sets",
+                            targetRPE: 8,
+                            targetRIR: 2,
+                            rest: "2-3 mins",
+                            sets: [
+                                { type: "Working", weight: 42.5, reps: 8, completed: false, actualWeight: null, actualReps: null, rpe: null, rir: null },
+                                { type: "Working", weight: 42.5, reps: 8, completed: false, actualWeight: null, actualReps: null, rpe: null, rir: null },
+                                { type: "Working", weight: 42.5, reps: 8, completed: false, actualWeight: null, actualReps: null, rpe: null, rir: null },
+                                { type: "Working", weight: 42.5, reps: 8, completed: false, actualWeight: null, actualReps: null, rpe: null, rir: null }
+                            ]
+                        },
+                        {
+                            name: "Deadlift",
+                            type: "Endurance",
+                            currentRM: 140,
+                            targetRM: 163,
+                            prescription: "72.5kg x 12 reps x 3 sets",
+                            targetRPE: 7,
+                            targetRIR: 3,
+                            rest: "2-3 mins",
+                            sets: [
+                                { type: "Working", weight: 72.5, reps: 12, completed: false, actualWeight: null, actualReps: null, rpe: null, rir: null },
+                                { type: "Working", weight: 72.5, reps: 12, completed: false, actualWeight: null, actualReps: null, rpe: null, rir: null },
+                                { type: "Working", weight: 72.5, reps: 12, completed: false, actualWeight: null, actualReps: null, rpe: null, rir: null }
+                            ]
+                        }
+                    ]
                 }
             ]
         }
     ]
 };
+
+// Generate weeks 4-12 with progressive overload
+for (let week = 4; week <= 12; week++) {
+    const weekData = {
+        weekNumber: week,
+        days: []
+    };
+    
+    // Calculate weight progression (2.5kg increase every 2 weeks)
+    const weeksSinceStart = week - 1;
+    const squatIncrement = Math.floor(weeksSinceStart / 2) * 2.5;
+    const pullUpIncrement = Math.floor(weeksSinceStart / 3) * 2.5;
+    const benchIncrement = Math.floor(weeksSinceStart / 3) * 2.5;
+    const pressIncrement = Math.floor(weeksSinceStart / 2) * 2;
+    const deadliftIncrement = Math.floor(weeksSinceStart / 3) * 2.5;
+    const rowIncrement = Math.floor(weeksSinceStart / 4) * 2;
+    
+    // Day 1: Leg Strength
+    weekData.days.push({
+        dayNumber: 1,
+        name: "Leg Strength",
+        focus: ["Leg strength", "Pull hyp", "Push endurance"],
+        exercises: [
+            {
+                name: "Back Squat",
+                type: "Strength (Top Set + Backoff)",
+                currentRM: 115 + squatIncrement,
+                targetRM: 130,
+                warmup: "20x8, 40x8, 60x8, 70x5, 90x2",
+                prescription: `TS: ${100 + squatIncrement}kg x 2, BO: ${80 + squatIncrement}kg x 5 x 3`,
+                targetRPE: 8,
+                targetRIR: 2,
+                rest: "3-5 min after top set, 2-3 min between backoff sets",
+                sets: [
+                    { type: "Top Set", weight: 100 + squatIncrement, reps: 2, completed: false, actualWeight: null, actualReps: null, rpe: null, rir: null },
+                    { type: "Backoff", weight: 80 + squatIncrement, reps: 5, completed: false, actualWeight: null, actualReps: null, rpe: null, rir: null },
+                    { type: "Backoff", weight: 80 + squatIncrement, reps: 5, completed: false, actualWeight: null, actualReps: null, rpe: null, rir: null },
+                    { type: "Backoff", weight: 80 + squatIncrement, reps: 5, completed: false, actualWeight: null, actualReps: null, rpe: null, rir: null }
+                ]
+            },
+            {
+                name: "Weighted Pull Ups",
+                type: "Hypertrophy",
+                currentRM: 100 + pullUpIncrement,
+                targetRM: 105,
+                prescription: `${85 + pullUpIncrement}kg x 8 x 2-4`,
+                targetRPE: 8,
+                targetRIR: 2,
+                rest: "2-3 mins",
+                sets: [
+                    { type: "Working", weight: 85 + pullUpIncrement, reps: 8, completed: false, actualWeight: null, actualReps: null, rpe: null, rir: null },
+                    { type: "Working", weight: 85 + pullUpIncrement, reps: 8, completed: false, actualWeight: null, actualReps: null, rpe: null, rir: null },
+                    { type: "Working", weight: 85 + pullUpIncrement, reps: 8, completed: false, actualWeight: null, actualReps: null, rpe: null, rir: null },
+                    { type: "Working", weight: 85 + pullUpIncrement, reps: 8, completed: false, actualWeight: null, actualReps: null, rpe: null, rir: null }
+                ]
+            },
+            {
+                name: "Bench Press",
+                type: "Endurance",
+                currentRM: 75 + benchIncrement,
+                targetRM: 91,
+                prescription: `${50 + benchIncrement}kg x 12 x 4`,
+                targetRPE: 7,
+                targetRIR: 3,
+                rest: "2-3 mins",
+                sets: [
+                    { type: "Working", weight: 50 + benchIncrement, reps: 12, completed: false, actualWeight: null, actualReps: null, rpe: null, rir: null },
+                    { type: "Working", weight: 50 + benchIncrement, reps: 12, completed: false, actualWeight: null, actualReps: null, rpe: null, rir: null },
+                    { type: "Working", weight: 50 + benchIncrement, reps: 12, completed: false, actualWeight: null, actualReps: null, rpe: null, rir: null },
+                    { type: "Working", weight: 50 + benchIncrement, reps: 12, completed: false, actualWeight: null, actualReps: null, rpe: null, rir: null }
+                ]
+            }
+        ]
+    });
+    
+    // Day 2: Push Strength
+    weekData.days.push({
+        dayNumber: 2,
+        name: "Push Strength",
+        focus: ["Push strength", "Leg hypertrophy", "Pull endurance"],
+        exercises: [
+            {
+                name: "Strict Press",
+                type: "Strength (Top Set + Backoff)",
+                currentRM: 55 + pressIncrement,
+                targetRM: 70,
+                warmup: "20x8, 30x5, 40x2, 50x2",
+                prescription: `TS: ${55 + pressIncrement}kg x 2, BO: ${45 + pressIncrement}kg x 5 x 3`,
+                targetRPE: 8,
+                targetRIR: 2,
+                rest: "3-5 min after top set, 2-3 min between backoff sets",
+                sets: [
+                    { type: "Top Set", weight: 55 + pressIncrement, reps: 2, completed: false, actualWeight: null, actualReps: null, rpe: null, rir: null },
+                    { type: "Backoff", weight: 45 + pressIncrement, reps: 5, completed: false, actualWeight: null, actualReps: null, rpe: null, rir: null },
+                    { type: "Backoff", weight: 45 + pressIncrement, reps: 5, completed: false, actualWeight: null, actualReps: null, rpe: null, rir: null },
+                    { type: "Backoff", weight: 45 + pressIncrement, reps: 5, completed: false, actualWeight: null, actualReps: null, rpe: null, rir: null }
+                ]
+            },
+            {
+                name: "Back Squat",
+                type: "Hypertrophy",
+                currentRM: 115 + squatIncrement,
+                targetRM: 130,
+                prescription: `${80 + squatIncrement}kg x 8 x 3-4`,
+                targetRPE: 8,
+                targetRIR: 3,
+                rest: "2-3 mins",
+                sets: [
+                    { type: "Working", weight: 80 + squatIncrement, reps: 8, completed: false, actualWeight: null, actualReps: null, rpe: null, rir: null },
+                    { type: "Working", weight: 80 + squatIncrement, reps: 8, completed: false, actualWeight: null, actualReps: null, rpe: null, rir: null },
+                    { type: "Working", weight: 80 + squatIncrement, reps: 8, completed: false, actualWeight: null, actualReps: null, rpe: null, rir: null }
+                ]
+            },
+            {
+                name: "Rows",
+                type: "Endurance",
+                currentRM: 60 + rowIncrement,
+                targetRM: 80,
+                prescription: `${22.5 + rowIncrement}kg x 12 x 4`,
+                targetRPE: 7,
+                targetRIR: 5,
+                rest: "2-3 mins",
+                sets: [
+                    { type: "Working", weight: 22.5 + rowIncrement, reps: 12, completed: false, actualWeight: null, actualReps: null, rpe: null, rir: null },
+                    { type: "Working", weight: 22.5 + rowIncrement, reps: 12, completed: false, actualWeight: null, actualReps: null, rpe: null, rir: null },
+                    { type: "Working", weight: 22.5 + rowIncrement, reps: 12, completed: false, actualWeight: null, actualReps: null, rpe: null, rir: null },
+                    { type: "Working", weight: 22.5 + rowIncrement, reps: 12, completed: false, actualWeight: null, actualReps: null, rpe: null, rir: null }
+                ]
+            }
+        ]
+    });
+    
+    // Day 3: Pull Strength
+    weekData.days.push({
+        dayNumber: 3,
+        name: "Pull Strength",
+        focus: ["Pull strength", "Push hypertrophy", "Leg endurance"],
+        exercises: [
+            {
+                name: "Weighted Pull Ups",
+                type: "Strength (Top Set + Backoff)",
+                currentRM: 100 + pullUpIncrement,
+                targetRM: 105,
+                warmup: "BW x 8, 10kg x 5, 15kg x 2",
+                prescription: `TS: ${22.5 + pullUpIncrement}kg x 2, BO: ${15 + Math.floor(pullUpIncrement * 0.8)}kg x 5 x 3`,
+                targetRPE: 8,
+                targetRIR: 2,
+                rest: "3-5 min after top set, 2-3 min between backoff sets",
+                sets: [
+                    { type: "Top Set", weight: 22.5 + pullUpIncrement, reps: 2, completed: false, actualWeight: null, actualReps: null, rpe: null, rir: null },
+                    { type: "Backoff", weight: 15 + Math.floor(pullUpIncrement * 0.8), reps: 5, completed: false, actualWeight: null, actualReps: null, rpe: null, rir: null },
+                    { type: "Backoff", weight: 15 + Math.floor(pullUpIncrement * 0.8), reps: 5, completed: false, actualWeight: null, actualReps: null, rpe: null, rir: null },
+                    { type: "Backoff", weight: 15 + Math.floor(pullUpIncrement * 0.8), reps: 5, completed: false, actualWeight: null, actualReps: null, rpe: null, rir: null }
+                ]
+            },
+            {
+                name: "Strict Press",
+                type: "Hypertrophy",
+                currentRM: 55 + pressIncrement,
+                targetRM: 70,
+                prescription: `${40 + pressIncrement}kg x 8 x 4`,
+                targetRPE: 8,
+                targetRIR: 2,
+                rest: "2-3 mins",
+                sets: [
+                    { type: "Working", weight: 40 + pressIncrement, reps: 8, completed: false, actualWeight: null, actualReps: null, rpe: null, rir: null },
+                    { type: "Working", weight: 40 + pressIncrement, reps: 8, completed: false, actualWeight: null, actualReps: null, rpe: null, rir: null },
+                    { type: "Working", weight: 40 + pressIncrement, reps: 8, completed: false, actualWeight: null, actualReps: null, rpe: null, rir: null },
+                    { type: "Working", weight: 40 + pressIncrement, reps: 8, completed: false, actualWeight: null, actualReps: null, rpe: null, rir: null }
+                ]
+            },
+            {
+                name: "Deadlift",
+                type: "Endurance",
+                currentRM: 140 + deadliftIncrement,
+                targetRM: 163,
+                prescription: `${70 + deadliftIncrement}kg x 12 x 3`,
+                targetRPE: 7,
+                targetRIR: 3,
+                rest: "2-3 mins",
+                sets: [
+                    { type: "Working", weight: 70 + deadliftIncrement, reps: 12, completed: false, actualWeight: null, actualReps: null, rpe: null, rir: null },
+                    { type: "Working", weight: 70 + deadliftIncrement, reps: 12, completed: false, actualWeight: null, actualReps: null, rpe: null, rir: null },
+                    { type: "Working", weight: 70 + deadliftIncrement, reps: 12, completed: false, actualWeight: null, actualReps: null, rpe: null, rir: null }
+                ]
+            }
+        ]
+    });
+    
+    trainingProgram.weeks.push(weekData);
+}
