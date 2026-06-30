@@ -33,10 +33,17 @@ class TrainingTracker {
                     day.exercises.forEach((exercise, exerciseIndex) => {
                         const savedExercise = savedData?.weeks?.[weekIndex]?.days?.[dayIndex]?.exercises?.[exerciseIndex];
                         if (savedExercise) {
+                            // Only load set completion data, NOT the weights/reps (keep new progressive values)
                             exercise.sets.forEach((set, setIndex) => {
                                 const savedSet = savedExercise.sets[setIndex];
-                                if (savedSet) {
-                                    Object.assign(set, savedSet);
+                                if (savedSet && savedSet.completed) {
+                                    // Only restore completion status and actual logged values
+                                    set.completed = savedSet.completed;
+                                    set.actualWeight = savedSet.actualWeight;
+                                    set.actualReps = savedSet.actualReps;
+                                    set.rpe = savedSet.rpe;
+                                    set.rir = savedSet.rir;
+                                    // Keep the NEW prescribed weight/reps from updated program
                                 }
                             });
                         }
