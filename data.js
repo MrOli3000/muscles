@@ -523,14 +523,20 @@ for (let week = 4; week <= 12; week++) {
         days: []
     };
     
-    // Calculate weight progression (2.5kg increase every 2 weeks)
+    // Calculate weight progression with consistent increases
     const weeksSinceStart = week - 1;
+    // Squat: +2.5kg every 2 weeks
     const squatIncrement = Math.floor(weeksSinceStart / 2) * 2.5;
-    const pullUpIncrement = Math.floor(weeksSinceStart / 3) * 2.5;
-    const benchIncrement = Math.floor(weeksSinceStart / 3) * 2.5;
+    // Pull Ups: +2.5kg every 2 weeks  
+    const pullUpIncrement = Math.ceil(weeksSinceStart / 2) * 2.5;
+    // Bench: +2.5kg every 2 weeks
+    const benchIncrement = Math.ceil(weeksSinceStart / 2) * 2.5;
+    // Press: +2kg every 2 weeks
     const pressIncrement = Math.floor(weeksSinceStart / 2) * 2;
-    const deadliftIncrement = Math.floor(weeksSinceStart / 3) * 2.5;
-    const rowIncrement = Math.floor(weeksSinceStart / 4) * 2;
+    // Deadlift: +2.5kg every 2 weeks (more consistent progression)
+    const deadliftIncrement = Math.ceil(weeksSinceStart / 2) * 2.5;
+    // Rows: +2kg every 2 weeks
+    const rowIncrement = Math.ceil(weeksSinceStart / 2) * 2;
     
     // Day 1: Leg Strength
     weekData.days.push({
