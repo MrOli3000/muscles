@@ -191,11 +191,22 @@ class TrainingTracker {
         const isCompleted = set.completed;
         const completedClass = isCompleted ? 'completed' : '';
         
+        // Get weight suggestion if this is the first set
+        const workout = this.getCurrentWorkout();
+        const exercise = workout.exercises[exerciseIndex];
+        let suggestionHTML = '';
+        if (setIndex === 0) {
+            const suggested = this.suggestNextWeight(exercise, exercise.sets);
+            if (suggested && !isCompleted) {
+                suggestionHTML = `<span class="weight-suggestion">Suggest: ${suggested}kg</span>`;
+            }
+        }
+        
         return `
             <div class="set-row ${completedClass}" data-exercise="${exerciseIndex}" data-set="${setIndex}">
                 <div class="set-info">
                     <span class="set-type">${set.type} ${setIndex + 1}</span>
-                    <span class="set-prescription">${set.weight}kg × ${set.reps} reps</span>
+                    <span class="set-prescription">${set.weight}kg × ${set.reps} reps${suggestionHTML}</span>
                 </div>
                 <div class="set-inputs">
                     <div class="input-group">
@@ -410,6 +421,394 @@ class TrainingTracker {
         modal.style.display = 'block';
     }
 
+    // 1RM Calculation using Epley formula
+    calculate1RM(weight, reps) {
+        if (reps === 1) return weight;
+        return weight * (1 + reps / 30);
+    }
+
+    // Track Personal Records
+    updatePRs() {
+        const prs = this.loadProgress('personalRecords') || {};
+        
+        trainingProgram.weeks.forEach(week => {
+            week.days.forEach(day => {
+                day.exercises.forEach(exercise => {
+                    exercise.sets.forEach(set => {
+                        if (set.completed && set.actualWeight && set.actualReps) {
+                            const estimated1RM = this.calculate1RM(set.actualWeight, set.actualReps);
+                            
+                            if (!prs[exercise.name] || estimated1RM > prs[exercise.name].value) {
+                                prs[exercise.name] = {
+                                    value: estimated1RM,
+                                    weight: set.actualWeight,
+                                    reps: set.actualReps,
+                                    date: new Date().toISOString(),
+                                    week: this.currentWeek,
+                                    day: this.currentDay
+                                };
+                            }
+                        }
+                    });
+                });
+            });
+        });
+        
+        this.saveProgress('personalRecords', prs);
+        return prs;
+    }
+
+    // Smart Weight Suggestions
+    suggestNextWeight(exercise, sets) {
+        const completedSets = sets.filter(s => s.completed && s.rpe && s.rir !== null);
+        if (completedSets.length === 0) return null;
+        
+        const avgRPE = completedSets.reduce((sum, s) => sum + s.rpe, 0) / completedSets.length;
+        const avgRIR = completedSets.reduce((sum, s) => sum + s.rir, 0) / completedSets.length;
+        const currentWeight = completedSets[0].actualWeight;
+        
+        // If RPE too low or RIR too high, suggest increase
+        if (avgRPE < 7.5 && avgRIR >= 3) {
+            return currentWeight + 2.5;
+        } else if (avgRPE < 8 && avgRIR >= 2) {
+            return currentWeight + 2.5;
+        }
+        
+        return null;
+    }
+
+    // Weekly Summary
+    showWeeklySummary() {
+        const summary = this.calculateWeeklySummary();
+        const modal = document.getElementById('summaryModal');
+        const container = document.getElementById('summaryContainer');
+        
+        let html = `
+            <div class="summary-stat">
+                <h3>Total Volume This Week</h3>
+                <div class="value">${summary.totalVolume.toFixed(0)} kg</div>
+            </div>
+            <div class="summary-stat">
+                <h3>Workouts Completed</h3>
+                <div class="value">${summary.workoutsCompleted} / ${summary.totalWorkouts}</div>
+            </div>
+            <div class="summary-stat">
+                <h3>Average RPE</h3>
+                <div class="value">${summary.avgRPE.toFixed(1)}</div>
+            </div>
+            <div class="summary-stat">
+                <h3>Average RIR</h3>
+                <div class="value">${summary.avgRIR.toFixed(1)}</div>
+            </div>
+            <div class="summary-stat">
+                <h3>Personal Records</h3>
+                <div class="value">${summary.newPRs}</div>
+            </div>
+        `;
+        
+        container.innerHTML = html;
+        modal.style.display = 'block';
+    }
+
+    calculateWeeklySummary() {
+        const week = trainingProgram.weeks.find(w => w.weekNumber === this.currentWeek);
+        if (!week) return { totalVolume: 0, workoutsCompleted: 0, totalWorkouts: 0, avgRPE: 0, avgRIR: 0, newPRs: 0 };
+        
+        let totalVolume = 0;
+        let workoutsCompleted = 0;
+        let allRPE = [];
+        let allRIR = [];
+        
+        week.days.forEach(day => {
+            let dayComplete = day.exercises.every(ex => ex.sets.some(s => s.completed));
+            if (dayComplete) workoutsCompleted++;
+            
+            day.exercises.forEach(exercise => {
+                exercise.sets.forEach(set => {
+                    if (set.completed) {
+                        totalVolume += (set.actualWeight || 0) * (set.actualReps || 0);
+                        if (set.rpe) allRPE.push(set.rpe);
+                        if (set.rir !== null) allRIR.push(set.rir);
+                    }
+                });
+            });
+        });
+        
+        const prs = this.loadProgress('personalRecords') || {};
+        const newPRs = Object.values(prs).filter(pr => {
+            const prDate = new Date(pr.date);
+            const weekAgo = new Date();
+            weekAgo.setDate(weekAgo.getDate() - 7);
+            return prDate > weekAgo;
+        }).length;
+        
+        return {
+            totalVolume,
+            workoutsCompleted,
+            totalWorkouts: week.days.length,
+            avgRPE: allRPE.length > 0 ? allRPE.reduce((a,b) => a+b, 0) / allRPE.length : 0,
+            avgRIR: allRIR.length > 0 ? allRIR.reduce((a,b) => a+b, 0) / allRIR.length : 0,
+            newPRs
+        };
+    }
+
+    // Progress Charts
+    showCharts() {
+        const modal = document.getElementById('chartsModal');
+        const container = document.getElementById('chartsContainer');
+        
+        // Get unique exercises
+        const exercises = new Set();
+        trainingProgram.weeks.forEach(week => {
+            week.days.forEach(day => {
+                day.exercises.forEach(ex => exercises.add(ex.name));
+            });
+        });
+        
+        container.innerHTML = '';
+        
+        exercises.forEach(exerciseName => {
+            const chartData = this.getChartData(exerciseName);
+            if (chartData.labels.length > 0) {
+                const canvas = document.createElement('canvas');
+                canvas.id = `chart-${exerciseName.replace(/\s/g, '-')}`;
+                container.appendChild(canvas);
+                
+                new Chart(canvas, {
+                    type: 'line',
+                    data: {
+                        labels: chartData.labels,
+                        datasets: [{
+                            label: exerciseName + ' (kg)',
+                            data: chartData.weights,
+                            borderColor: '#667eea',
+                            backgroundColor: 'rgba(102, 126, 234, 0.1)',
+                            tension: 0.3
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            title: {
+                                display: true,
+                                text: exerciseName
+                            }
+                        },
+                        scales: {
+                            y: {
+                                beginAtZero: false
+                            }
+                        }
+                    }
+                });
+            }
+        });
+        
+        modal.style.display = 'block';
+    }
+
+    getChartData(exerciseName) {
+        const labels = [];
+        const weights = [];
+        
+        trainingProgram.weeks.forEach((week, weekIndex) => {
+            week.days.forEach((day, dayIndex) => {
+                const exercise = day.exercises.find(ex => ex.name === exerciseName);
+                if (exercise) {
+                    const completedSets = exercise.sets.filter(s => s.completed);
+                    if (completedSets.length > 0) {
+                        const maxWeight = Math.max(...completedSets.map(s => s.actualWeight || 0));
+                        labels.push(`W${week.weekNumber}D${day.dayNumber}`);
+                        weights.push(maxWeight);
+                    }
+                }
+            });
+        });
+        
+        return { labels, weights };
+    }
+
+    // Achievement System
+    showAchievements() {
+        const achievements = this.checkAchievements();
+        const modal = document.getElementById('achievementsModal');
+        const container = document.getElementById('achievementsContainer');
+        
+        let html = '<div style="display: flex; flex-wrap: wrap; justify-content: center;">';
+        
+        achievements.forEach(achievement => {
+            const lockedClass = achievement.unlocked ? '' : 'locked';
+            const icon = achievement.unlocked ? '🏆' : '🔒';
+            html += `
+                <div class="achievement-badge ${lockedClass}">
+                    <div style="font-size: 2em; margin-bottom: 8px;">${icon}</div>
+                    <div style="font-weight: 700;">${achievement.name}</div>
+                    <div style="font-size: 0.85em; margin-top: 4px;">${achievement.description}</div>
+                </div>
+            `;
+        });
+        
+        html += '</div>';
+        container.innerHTML = html;
+        modal.style.display = 'block';
+    }
+
+    checkAchievements() {
+        const totalSets = this.history.length;
+        const prs = this.loadProgress('personalRecords') || {};
+        const completedWeeks = this.currentWeek - 1;
+        
+        const achievements = [
+            {
+                name: "First Step",
+                description: "Complete your first set",
+                unlocked: totalSets >= 1
+            },
+            {
+                name: "Getting Started",
+                description: "Log 50 sets",
+                unlocked: totalSets >= 50
+            },
+            {
+                name: "Committed",
+                description: "Log 100 sets",
+                unlocked: totalSets >= 100
+            },
+            {
+                name: "Dedicated",
+                description: "Log 250 sets",
+                unlocked: totalSets >= 250
+            },
+            {
+                name: "Beast Mode",
+                description: "Log 500 sets",
+                unlocked: totalSets >= 500
+            },
+            {
+                name: "Record Breaker",
+                description: "Set your first PR",
+                unlocked: Object.keys(prs).length >= 1
+            },
+            {
+                name: "All Around",
+                description: "Set PRs in all exercises",
+                unlocked: Object.keys(prs).length >= 6
+            },
+            {
+                name: "Month Strong",
+                description: "Complete 4 weeks",
+                unlocked: completedWeeks >= 4
+            },
+            {
+                name: "Program Complete",
+                description: "Finish all 12 weeks",
+                unlocked: completedWeeks >= 12
+            }
+        ];
+        
+        return achievements;
+    }
+
+    // Export Data
+    exportData() {
+        const data = {
+            currentWeek: this.currentWeek,
+            currentDay: this.currentDay,
+            history: this.history,
+            workoutData: trainingProgram,
+            personalRecords: this.loadProgress('personalRecords'),
+            exportDate: new Date().toISOString()
+        };
+        
+        const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `training-data-${new Date().toISOString().split('T')[0]}.json`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+        
+        alert('Data exported successfully!');
+    }
+
+    // Deload Week
+    deloadWeek() {
+        if (!confirm('Apply 20% deload to current week? This will reduce all prescribed weights.')) {
+            return;
+        }
+        
+        const week = trainingProgram.weeks.find(w => w.weekNumber === this.currentWeek);
+        if (!week) return;
+        
+        week.days.forEach(day => {
+            day.exercises.forEach(exercise => {
+                exercise.sets.forEach(set => {
+                    set.weight = Math.round(set.weight * 0.8 * 2) / 2; // 80%, rounded to nearest 2.5kg
+                });
+            });
+        });
+        
+        this.saveWorkoutData();
+        this.renderWorkout();
+        alert('Deload applied! All weights reduced by 20%.');
+    }
+
+    // Dark Mode Toggle
+    toggleDarkMode() {
+        document.body.classList.toggle('dark-mode');
+        const isDark = document.body.classList.contains('dark-mode');
+        this.saveProgress('darkMode', isDark);
+        
+        const btn = document.getElementById('darkModeToggle');
+        btn.textContent = isDark ? '☀️' : '🌙';
+    }
+
+    initDarkMode() {
+        const isDark = this.loadProgress('darkMode');
+        if (isDark) {
+            document.body.classList.add('dark-mode');
+            document.getElementById('darkModeToggle').textContent = '☀️';
+        }
+    }
+
+    // Swipe Navigation
+    initSwipeNavigation() {
+        this.touchStartX = 0;
+        this.touchEndX = 0;
+        
+        document.addEventListener('touchstart', e => {
+            this.touchStartX = e.changedTouches[0].screenX;
+        }, { passive: true });
+        
+        document.addEventListener('touchend', e => {
+            this.touchEndX = e.changedTouches[0].screenX;
+            this.handleSwipe();
+        }, { passive: true });
+    }
+
+    handleSwipe() {
+        const swipeThreshold = 100;
+        const diff = this.touchStartX - this.touchEndX;
+        
+        if (Math.abs(diff) > swipeThreshold) {
+            if (diff > 0) {
+                // Swipe left - next day
+                this.nextDay();
+            } else {
+                // Swipe right - previous day
+                this.prevDay();
+            }
+        }
+    }
+
+    showMenu() {
+        const modal = document.getElementById('menuModal');
+        modal.style.display = 'block';
+    }
+
     attachEventListeners() {
         document.getElementById('nextDayBtn').addEventListener('click', () => this.nextDay());
         document.getElementById('prevDayBtn').addEventListener('click', () => this.prevDay());
@@ -417,21 +816,37 @@ class TrainingTracker {
         document.getElementById('prevDayBtnTop').addEventListener('click', () => this.prevDay());
         document.getElementById('nextWeekBtnTop').addEventListener('click', () => this.nextWeek());
         document.getElementById('prevWeekBtnTop').addEventListener('click', () => this.prevWeek());
-        document.getElementById('resetBtn').addEventListener('click', () => this.reset());
         document.getElementById('viewHistoryBtn').addEventListener('click', () => this.showHistory());
+        document.getElementById('summaryBtn').addEventListener('click', () => this.showWeeklySummary());
+        document.getElementById('chartsBtn').addEventListener('click', () => this.showCharts());
+        document.getElementById('achievementsBtn').addEventListener('click', () => this.showAchievements());
+        document.getElementById('darkModeToggle').addEventListener('click', () => this.toggleDarkMode());
+        document.getElementById('menuBtn').addEventListener('click', () => this.showMenu());
+        document.getElementById('exportBtn').addEventListener('click', () => this.exportData());
+        document.getElementById('deloadBtn').addEventListener('click', () => this.deloadWeek());
+        document.getElementById('resetBtn').addEventListener('click', () => this.reset());
 
-        const modal = document.getElementById('historyModal');
-        const closeBtn = modal.querySelector('.close');
-        
-        closeBtn.addEventListener('click', () => {
-            modal.style.display = 'none';
-        });
-
-        window.addEventListener('click', (event) => {
-            if (event.target === modal) {
+        // Close modals
+        const modals = ['historyModal', 'summaryModal', 'chartsModal', 'achievementsModal', 'menuModal'];
+        modals.forEach(modalId => {
+            const modal = document.getElementById(modalId);
+            const closeBtn = modal.querySelector('.close');
+            
+            closeBtn.addEventListener('click', () => {
                 modal.style.display = 'none';
-            }
+            });
+
+            window.addEventListener('click', (event) => {
+                if (event.target === modal) {
+                    modal.style.display = 'none';
+                }
+            });
         });
+
+        // Initialize features
+        this.initDarkMode();
+        this.initSwipeNavigation();
+        this.updatePRs();
     }
 }
 

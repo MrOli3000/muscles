@@ -3,13 +3,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#667eea">
+    <meta name="description" content="Track your strength training workouts with RPE, RIR, and progressive overload">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <title>Training Tracker</title>
+    <link rel="manifest" href="manifest.json">
     <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 </head>
 <body>
     <div class="container">
         <header>
-            <h1>🏋️ Training Tracker</h1>
+            <div class="header-top">
+                <h1>🏋️ Training Tracker</h1>
+                <div class="header-actions">
+                    <button id="darkModeToggle" class="btn-icon" title="Toggle Dark Mode">🌙</button>
+                    <button id="menuBtn" class="btn-icon" title="Menu">☰</button>
+                </div>
+            </div>
             <div class="week-navigation">
                 <button id="prevWeekBtnTop" class="btn-week">◀</button>
                 <span id="currentWeek">Week 1</span>
@@ -38,8 +50,10 @@
         </main>
 
         <footer>
-            <button id="resetBtn" class="btn btn-danger">Reset Progress</button>
-            <button id="viewHistoryBtn" class="btn btn-secondary">View History</button>
+            <button id="summaryBtn" class="btn btn-primary">📊 Summary</button>
+            <button id="chartsBtn" class="btn btn-primary">📈 Charts</button>
+            <button id="achievementsBtn" class="btn btn-primary">🏆 Badges</button>
+            <button id="viewHistoryBtn" class="btn btn-secondary">📜 History</button>
         </footer>
     </div>
 
@@ -48,6 +62,42 @@
             <span class="close">&times;</span>
             <h2>Training History</h2>
             <div id="historyContainer"></div>
+        </div>
+    </div>
+
+    <div id="summaryModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Weekly Summary</h2>
+            <div id="summaryContainer"></div>
+        </div>
+    </div>
+
+    <div id="chartsModal" class="modal">
+        <div class="modal-content modal-wide">
+            <span class="close">&times;</span>
+            <h2>Progress Charts</h2>
+            <div id="chartsContainer"></div>
+        </div>
+    </div>
+
+    <div id="achievementsModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>🏆 Achievements</h2>
+            <div id="achievementsContainer"></div>
+        </div>
+    </div>
+
+    <div id="menuModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Menu</h2>
+            <div id="menuContainer">
+                <button id="exportBtn" class="btn btn-primary btn-full">📥 Export Data</button>
+                <button id="deloadBtn" class="btn btn-secondary btn-full">⚡ Deload Week</button>
+                <button id="resetBtn" class="btn btn-danger btn-full">🔄 Reset Progress</button>
+            </div>
         </div>
     </div>
 
