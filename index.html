@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Training Tracker</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🏋️ Training Tracker</h1>
+            <div class="week-info">
+                <span id="currentWeek">Week 1</span>
+                <span id="currentDay">Day 1: Leg Strength</span>
+            </div>
+        </header>
+
+        <main>
+            <div id="workoutContainer">
+                <!-- Workout will be dynamically loaded here -->
+            </div>
+
+            <div class="navigation">
+                <button id="prevDayBtn" class="btn btn-secondary">← Previous Day</button>
+                <button id="nextDayBtn" class="btn btn-primary">Next Day →</button>
+            </div>
+        </main>
+
+        <footer>
+            <button id="resetBtn" class="btn btn-danger">Reset Progress</button>
+            <button id="viewHistoryBtn" class="btn btn-secondary">View History</button>
+        </footer>
+    </div>
+
+    <div id="historyModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Training History</h2>
+            <div id="historyContainer"></div>
+        </div>
+    </div>
+
+    <script src="data.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
