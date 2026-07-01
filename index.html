@@ -95,9 +95,12 @@
             <span class="close">&times;</span>
             <h2>Menu</h2>
             <div id="menuContainer">
+                <button id="syncBtn" class="btn btn-primary btn-full">☁️ Sync to Cloud</button>
                 <button id="exportBtn" class="btn btn-primary btn-full">📥 Export Data</button>
+                <button id="importBtn" class="btn btn-primary btn-full">📤 Import Data</button>
                 <button id="deloadBtn" class="btn btn-secondary btn-full">⚡ Deload Week</button>
                 <button id="resetBtn" class="btn btn-danger btn-full">🔄 Reset Progress</button>
+                <input type="file" id="importFileInput" accept=".json" style="display: none;">
             </div>
         </div>
     </div>
@@ -158,6 +161,7 @@
         </div>
     </div>
 
+    <script src="firebase-config.js"></script>
     <script src="data.js"></script>
     <script src="app.js"></script>
 </body>

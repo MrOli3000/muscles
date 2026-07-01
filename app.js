@@ -8,9 +8,12 @@ class TrainingTracker {
         this.timerInterval = null;
         this.timerSeconds = 0;
         this.timerRunning = false;
+        this.userId = null;
+        this.firebaseReady = false;
         this.loadWorkoutData();
         this.collapseAllExercises(); // Collapse before rendering
         this.init();
+        this.initFirebase();
     }
 
     init() {
@@ -1159,7 +1162,10 @@ class TrainingTracker {
         document.getElementById('oneRMBtn').addEventListener('click', () => this.showOneRMTracker());
         document.getElementById('darkModeToggle').addEventListener('click', () => this.toggleDarkMode());
         document.getElementById('menuBtn').addEventListener('click', () => this.showMenu());
+        document.getElementById('syncBtn').addEventListener('click', () => this.syncToCloud());
         document.getElementById('exportBtn').addEventListener('click', () => this.exportData());
+        document.getElementById('importBtn').addEventListener('click', () => document.getElementById('importFileInput').click());
+        document.getElementById('importFileInput').addEventListener('change', (e) => this.importData(e));
         document.getElementById('deloadBtn').addEventListener('click', () => this.deloadWeek());
         document.getElementById('resetBtn').addEventListener('click', () => this.reset());
 
@@ -1194,6 +1200,146 @@ class TrainingTracker {
         this.initDarkMode();
         this.initSwipeNavigation();
         this.updatePRs();
+    }
+
+    // Firebase Integration
+    initFirebase() {
+        if (typeof firebase !== 'undefined' && typeof initializeFirebase === 'function') {
+            try {
+                this.firebaseReady = initializeFirebase();
+                if (this.firebaseReady && auth) {
+                    // Sign in anonymously for now
+                    auth.signInAnonymously().then((userCredential) => {
+                        this.userId = userCredential.user.uid;
+                        console.log('Firebase connected! User ID:', this.userId);
+                        this.loadFromCloud();
+                    }).catch((error) => {
+                        console.warn('Firebase auth failed, using localStorage only:', error.message);
+                        this.firebaseReady = false;
+                    });
+                }
+            } catch (error) {
+                console.warn('Firebase not configured, using localStorage only');
+                this.firebaseReady = false;
+            }
+        } else {
+            console.log('Firebase SDK not loaded, using localStorage only');
+            this.firebaseReady = false;
+        }
+    }
+
+    async syncToCloud() {
+        if (!this.firebaseReady || !db || !this.userId) {
+            alert('Firebase not configured. Please set up Firebase first.\n\nSee FIREBASE_SETUP.md for instructions.');
+            return;
+        }
+
+        try {
+            const allData = this.getAllData();
+            
+            await db.collection('users').doc(this.userId).set({
+                ...allData,
+                lastSync: new Date().toISOString()
+            });
+            
+            alert('✅ Data synced to cloud successfully!');
+        } catch (error) {
+            console.error('Sync error:', error);
+            alert('❌ Failed to sync to cloud: ' + error.message);
+        }
+    }
+
+    async loadFromCloud() {
+        if (!this.firebaseReady || !db || !this.userId) return;
+
+        try {
+            const doc = await db.collection('users').doc(this.userId).get();
+            
+            if (doc.exists) {
+                const cloudData = doc.data();
+                const localLastSync = this.loadProgress('lastSync');
+                const cloudLastSync = cloudData.lastSync;
+
+                // Use cloud data if it's newer
+                if (!localLastSync || (cloudLastSync && new Date(cloudLastSync) > new Date(localLastSync))) {
+                    console.log('Loading data from cloud...');
+                    this.importAllData(cloudData);
+                    alert('📥 Data loaded from cloud!');
+                }
+            }
+        } catch (error) {
+            console.error('Load from cloud error:', error);
+        }
+    }
+
+    getAllData() {
+        return {
+            currentWeek: this.currentWeek,
+            currentDay: this.currentDay,
+            history: this.history,
+            workoutData: trainingProgram,
+            personalRecords: this.loadProgress('personalRecords'),
+            oneRepMaxTests: this.loadProgress('oneRepMaxTests'),
+            darkMode: document.body.classList.contains('dark-mode')
+        };
+    }
+
+    importAllData(data) {
+        if (data.currentWeek) this.currentWeek = data.currentWeek;
+        if (data.currentDay) this.currentDay = data.currentDay;
+        if (data.history) this.history = data.history;
+        if (data.workoutData) {
+            // Merge workout data
+            trainingProgram.weeks = data.workoutData.weeks || trainingProgram.weeks;
+        }
+        if (data.personalRecords) this.saveProgress('personalRecords', data.personalRecords);
+        if (data.oneRepMaxTests) this.saveProgress('oneRepMaxTests', data.oneRepMaxTests);
+        if (data.lastSync) this.saveProgress('lastSync', data.lastSync);
+        
+        // Save all to localStorage
+        this.saveProgress('currentWeek', this.currentWeek);
+        this.saveProgress('currentDay', this.currentDay);
+        this.saveProgress('history', this.history);
+        this.saveWorkoutData();
+        
+        // Refresh UI
+        this.renderProgressSummary();
+        this.renderWorkout();
+    }
+
+    exportData() {
+        const allData = this.getAllData();
+        const dataStr = JSON.stringify(allData, null, 2);
+        const dataBlob = new Blob([dataStr], { type: 'application/json' });
+        const url = URL.createObjectURL(dataBlob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = `training-data-${new Date().toISOString().split('T')[0]}.json`;
+        link.click();
+        URL.revokeObjectURL(url);
+        alert('📥 Data exported successfully!');
+    }
+
+    importData(event) {
+        const file = event.target.files[0];
+        if (!file) return;
+
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            try {
+                const data = JSON.parse(e.target.result);
+                if (confirm('This will replace all current data. Are you sure?')) {
+                    this.importAllData(data);
+                    alert('✅ Data imported successfully!');
+                }
+            } catch (error) {
+                alert('❌ Failed to import data: ' + error.message);
+            }
+        };
+        reader.readAsText(file);
+        
+        // Reset file input
+        event.target.value = '';
     }
 }
 
