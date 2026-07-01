@@ -9,8 +9,8 @@ class TrainingTracker {
         this.timerSeconds = 0;
         this.timerRunning = false;
         this.loadWorkoutData();
+        this.collapseAllExercises(); // Collapse before rendering
         this.init();
-        this.collapseAllExercises();
     }
 
     init() {
@@ -871,9 +871,9 @@ class TrainingTracker {
             startBtn.classList.add('running');
             
             this.timerInterval = setInterval(() => {
-                this.timerSeconds += 100; // Increment by 100ms
+                this.timerSeconds++;
                 this.updateTimerDisplay();
-            }, 100); // Update every 100ms
+            }, 1000);
         } else {
             this.pauseTimer();
         }
@@ -906,11 +906,9 @@ class TrainingTracker {
     }
 
     updateTimerDisplay() {
-        const totalMs = this.timerSeconds;
-        const minutes = Math.floor(totalMs / 60000);
-        const seconds = Math.floor((totalMs % 60000) / 1000);
-        const deciseconds = Math.floor((totalMs % 1000) / 100);
-        const display = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}.${deciseconds}`;
+        const minutes = Math.floor(this.timerSeconds / 60);
+        const seconds = this.timerSeconds % 60;
+        const display = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
         document.getElementById('timerDisplay').textContent = display;
     }
 
