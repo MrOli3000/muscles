@@ -5,6 +5,9 @@ class TrainingTracker {
         this.currentDay = this.loadProgress('currentDay') || 1;
         this.history = this.loadProgress('history') || [];
         this.collapsedExercises = new Set();
+        this.timerInterval = null;
+        this.timerSeconds = 0;
+        this.timerRunning = false;
         this.loadWorkoutData();
         this.init();
         this.collapseAllExercises();
@@ -284,6 +287,9 @@ class TrainingTracker {
             return;
         }
 
+        // Save scroll position to prevent jumping
+        const scrollPos = window.pageYOffset || document.documentElement.scrollTop;
+
         // Always save the data, whether marking complete or updating
         set.completed = true;
         set.actualWeight = weight;
@@ -308,6 +314,9 @@ class TrainingTracker {
         this.saveWorkoutData();
         this.saveProgress('history', this.history);
         this.renderWorkout();
+        
+        // Restore scroll position to prevent jumping
+        window.scrollTo(0, scrollPos);
         
         // Update PRs after logging
         this.updatePRs();
@@ -908,6 +917,11 @@ class TrainingTracker {
         document.getElementById('exportBtn').addEventListener('click', () => this.exportData());
         document.getElementById('deloadBtn').addEventListener('click', () => this.deloadWeek());
         document.getElementById('resetBtn').addEventListener('click', () => this.reset());
+
+        // Timer controls
+        document.getElementById('timerStart').addEventListener('click', () => this.startTimer());
+        document.getElementById('timerStop').addEventListener('click', () => this.stopTimer());
+        document.getElementById('timerReset').addEventListener('click', () => this.resetTimer());
 
         // Close modals
         const modals = ['historyModal', 'summaryModal', 'chartsModal', 'achievementsModal', 'menuModal'];
