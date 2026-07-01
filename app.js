@@ -264,6 +264,7 @@ class TrainingTracker {
     toggleSetComplete(exerciseIndex, setIndex) {
         const workout = this.getCurrentWorkout();
         const set = workout.exercises[exerciseIndex].sets[setIndex];
+        const exercise = workout.exercises[exerciseIndex];
         
         const setRow = document.querySelector(`[data-exercise="${exerciseIndex}"][data-set="${setIndex}"]`);
         const weight = parseFloat(setRow.querySelector('.input-weight').value);
@@ -276,33 +277,33 @@ class TrainingTracker {
             return;
         }
 
-        if (!set.completed) {
-            set.completed = true;
-            set.actualWeight = weight;
-            set.actualReps = reps;
-            set.rpe = rpe || null;
-            set.rir = rir || null;
+        // Always save the data, whether marking complete or updating
+        set.completed = true;
+        set.actualWeight = weight;
+        set.actualReps = reps;
+        set.rpe = rpe || null;
+        set.rir = rir || null;
 
-            this.addToHistory({
-                date: new Date().toISOString(),
-                week: this.currentWeek,
-                day: this.currentDay,
-                exercise: workout.exercises[exerciseIndex].name,
-                setType: set.type,
-                weight: weight,
-                reps: reps,
-                rpe: rpe,
-                rir: rir
-            });
-        } else {
-            set.actualWeight = weight;
-            set.actualReps = reps;
-            set.rpe = rpe || null;
-            set.rir = rir || null;
-        }
+        // Add to history
+        this.addToHistory({
+            date: new Date().toISOString(),
+            week: this.currentWeek,
+            day: this.currentDay,
+            exercise: exercise.name,
+            setType: set.type,
+            weight: weight,
+            reps: reps,
+            rpe: rpe,
+            rir: rir
+        });
 
+        // Save data and re-render WITHOUT changing day
         this.saveWorkoutData();
+        this.saveProgress('history', this.history);
         this.renderWorkout();
+        
+        // Update PRs after logging
+        this.updatePRs();
     }
 
     addToHistory(entry) {
