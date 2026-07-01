@@ -592,33 +592,57 @@ class TrainingTracker {
         const modal = document.getElementById('chartsModal');
         const container = document.getElementById('chartsContainer');
         
-        // Get unique exercises
-        const exercises = new Set();
+        // Get unique exercise-focus combinations
+        const exerciseFocusPairs = new Map();
         trainingProgram.weeks.forEach(week => {
             week.days.forEach(day => {
-                day.exercises.forEach(ex => exercises.add(ex.name));
+                day.exercises.forEach(ex => {
+                    // Extract focus from type (Strength, Hypertrophy, Endurance)
+                    let focus = 'General';
+                    if (ex.type.includes('Strength')) focus = 'Strength';
+                    else if (ex.type.includes('Hypertrophy')) focus = 'Hypertrophy';
+                    else if (ex.type.includes('Endurance')) focus = 'Endurance';
+                    
+                    const key = `${ex.name}-${focus}`;
+                    if (!exerciseFocusPairs.has(key)) {
+                        exerciseFocusPairs.set(key, { name: ex.name, focus: focus });
+                    }
+                });
             });
         });
         
         container.innerHTML = '';
         
-        exercises.forEach(exerciseName => {
-            const chartData = this.getChartData(exerciseName);
+        // Define colors for different focuses
+        const focusColors = {
+            'Strength': { border: '#ef4444', bg: 'rgba(239, 68, 68, 0.1)' },
+            'Hypertrophy': { border: '#667eea', bg: 'rgba(102, 126, 234, 0.1)' },
+            'Endurance': { border: '#10b981', bg: 'rgba(16, 185, 129, 0.1)' },
+            'General': { border: '#6b7280', bg: 'rgba(107, 114, 128, 0.1)' }
+        };
+        
+        exerciseFocusPairs.forEach((pair, key) => {
+            const chartData = this.getChartData(pair.name, pair.focus);
             if (chartData.labels.length > 0) {
                 const canvas = document.createElement('canvas');
-                canvas.id = `chart-${exerciseName.replace(/\s/g, '-')}`;
+                canvas.id = `chart-${key.replace(/\s/g, '-')}`;
                 container.appendChild(canvas);
+                
+                const colors = focusColors[pair.focus];
                 
                 new Chart(canvas, {
                     type: 'line',
                     data: {
                         labels: chartData.labels,
                         datasets: [{
-                            label: exerciseName + ' (kg)',
+                            label: `${pair.name} - ${pair.focus} (kg)`,
                             data: chartData.weights,
-                            borderColor: '#667eea',
-                            backgroundColor: 'rgba(102, 126, 234, 0.1)',
-                            tension: 0.3
+                            borderColor: colors.border,
+                            backgroundColor: colors.bg,
+                            tension: 0.3,
+                            borderWidth: 2,
+                            pointRadius: 4,
+                            pointHoverRadius: 6
                         }]
                     },
                     options: {
@@ -627,12 +651,29 @@ class TrainingTracker {
                         plugins: {
                             title: {
                                 display: true,
-                                text: exerciseName
+                                text: `${pair.name} - ${pair.focus}`,
+                                font: {
+                                    size: 16,
+                                    weight: 'bold'
+                                }
+                            },
+                            legend: {
+                                display: true
                             }
                         },
                         scales: {
                             y: {
-                                beginAtZero: false
+                                beginAtZero: false,
+                                title: {
+                                    display: true,
+                                    text: 'Weight (kg)'
+                                }
+                            },
+                            x: {
+                                title: {
+                                    display: true,
+                                    text: 'Week/Day'
+                                }
                             }
                         }
                     }
@@ -643,13 +684,22 @@ class TrainingTracker {
         modal.style.display = 'block';
     }
 
-    getChartData(exerciseName) {
+    getChartData(exerciseName, focus) {
         const labels = [];
         const weights = [];
         
         trainingProgram.weeks.forEach((week, weekIndex) => {
             week.days.forEach((day, dayIndex) => {
-                const exercise = day.exercises.find(ex => ex.name === exerciseName);
+                const exercise = day.exercises.find(ex => {
+                    // Match both name and focus
+                    let exFocus = 'General';
+                    if (ex.type.includes('Strength')) exFocus = 'Strength';
+                    else if (ex.type.includes('Hypertrophy')) exFocus = 'Hypertrophy';
+                    else if (ex.type.includes('Endurance')) exFocus = 'Endurance';
+                    
+                    return ex.name === exerciseName && exFocus === focus;
+                });
+                
                 if (exercise) {
                     const completedSets = exercise.sets.filter(s => s.completed);
                     if (completedSets.length > 0) {
