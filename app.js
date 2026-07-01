@@ -842,6 +842,56 @@ class TrainingTracker {
         modal.style.display = 'block';
     }
 
+    // Timer Functions
+    startTimer() {
+        if (!this.timerRunning) {
+            this.timerRunning = true;
+            const startBtn = document.getElementById('timerStart');
+            startBtn.textContent = '⏸';
+            startBtn.classList.add('running');
+            
+            this.timerInterval = setInterval(() => {
+                this.timerSeconds++;
+                this.updateTimerDisplay();
+            }, 1000);
+        } else {
+            this.pauseTimer();
+        }
+    }
+
+    pauseTimer() {
+        this.timerRunning = false;
+        const startBtn = document.getElementById('timerStart');
+        startBtn.textContent = '▶';
+        startBtn.classList.remove('running');
+        startBtn.classList.add('paused');
+        
+        if (this.timerInterval) {
+            clearInterval(this.timerInterval);
+            this.timerInterval = null;
+        }
+    }
+
+    stopTimer() {
+        this.pauseTimer();
+        this.timerSeconds = 0;
+        this.updateTimerDisplay();
+        const startBtn = document.getElementById('timerStart');
+        startBtn.classList.remove('paused');
+    }
+
+    resetTimer() {
+        this.timerSeconds = 0;
+        this.updateTimerDisplay();
+    }
+
+    updateTimerDisplay() {
+        const minutes = Math.floor(this.timerSeconds / 60);
+        const seconds = this.timerSeconds % 60;
+        const display = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+        document.getElementById('timerDisplay').textContent = display;
+    }
+
     attachEventListeners() {
         document.getElementById('nextDayBtn').addEventListener('click', () => this.nextDay());
         document.getElementById('prevDayBtn').addEventListener('click', () => this.prevDay());
