@@ -50,6 +50,7 @@
         </main>
 
         <footer>
+            <button id="oneRMBtn" class="btn btn-primary">💪 1RM</button>
             <button id="summaryBtn" class="btn btn-primary">📊 Summary</button>
             <button id="chartsBtn" class="btn btn-primary">📈 Charts</button>
             <button id="achievementsBtn" class="btn btn-primary">🏆 Badges</button>
@@ -97,6 +98,53 @@
                 <button id="exportBtn" class="btn btn-primary btn-full">📥 Export Data</button>
                 <button id="deloadBtn" class="btn btn-secondary btn-full">⚡ Deload Week</button>
                 <button id="resetBtn" class="btn btn-danger btn-full">🔄 Reset Progress</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="oneRMModal" class="modal">
+        <div class="modal-content modal-wide">
+            <span class="close">&times;</span>
+            <h2>💪 One Rep Max Tracker</h2>
+            <button id="logOneRMBtn" class="btn btn-primary" style="margin-bottom: 20px;">+ Log One Rep Max</button>
+            <div id="oneRMContainer"></div>
+        </div>
+    </div>
+
+    <div id="oneRMTestModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>🏋️ Log One Rep Max Test</h2>
+            <div id="oneRMTestContainer">
+                <div class="input-group" style="margin-bottom: 20px;">
+                    <label for="exerciseSelect" style="display: block; margin-bottom: 8px; font-weight: 600;">Select Exercise:</label>
+                    <select id="exerciseSelect" style="width: 100%; padding: 8px; border-radius: 6px; border: 1px solid var(--input-border); background: var(--input-bg); color: var(--text-primary); font-size: 14px;">
+                        <option value="">-- Choose an exercise --</option>
+                    </select>
+                </div>
+                <div id="warmupProtocol" style="display: none;">
+                    <h3 style="margin-top: 0;">📋 Recommended Warm-up Protocol</h3>
+                    <div id="warmupSets" style="background: var(--card-bg); padding: 15px; border-radius: 8px; margin-bottom: 20px; border: 1px solid var(--border-color);"></div>
+                    
+                    <h3>🎯 Testing Methodology</h3>
+                    <div style="background: var(--card-bg); padding: 15px; border-radius: 8px; margin-bottom: 20px; border: 1px solid var(--border-color);">
+                        <ol style="margin: 0; padding-left: 20px; line-height: 1.8;">
+                            <li>Complete all warm-up sets as prescribed</li>
+                            <li>Rest 3-5 minutes after your last warm-up set</li>
+                            <li>Attempt your 1RM with proper form</li>
+                            <li>If successful and felt good (RPE 9-10), rest 5 minutes and try 2.5-5kg more</li>
+                            <li>Continue until you reach your true 1RM</li>
+                            <li>Log your best successful lift below</li>
+                        </ol>
+                    </div>
+
+                    <div class="input-group" style="margin-bottom: 20px;">
+                        <label for="achievedRM" style="display: block; margin-bottom: 8px; font-weight: 600;">Achieved 1RM (kg):</label>
+                        <input type="number" id="achievedRM" step="2.5" placeholder="Enter weight achieved" style="width: 100%; padding: 8px; border-radius: 6px; border: 1px solid var(--input-border); background: var(--input-bg); color: var(--text-primary); font-size: 16px;">
+                    </div>
+
+                    <button id="saveOneRMBtn" class="btn btn-primary btn-full">💾 Save 1RM</button>
+                </div>
             </div>
         </div>
     </div>

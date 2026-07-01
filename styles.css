@@ -717,6 +717,25 @@ footer {
     color: #4caf50;
 }
 
+/* 1RM Tracker Styles */
+#oneRMContainer table {
+    box-shadow: 0 2px 8px var(--shadow);
+}
+
+#oneRMContainer table tbody tr:hover {
+    background: rgba(102, 126, 234, 0.05);
+}
+
+#oneRMTestContainer select,
+#oneRMTestContainer input {
+    font-size: 16px;
+}
+
+#warmupSets {
+    max-height: 400px;
+    overflow-y: auto;
+}
+
 /* Button Updates */
 .btn-completed {
     background: linear-gradient(135deg, #10b981 0%, #059669 100%) !important;

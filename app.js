@@ -912,6 +912,189 @@ class TrainingTracker {
         modal.style.display = 'block';
     }
 
+    // One Rep Max Tracking
+    showOneRMTracker() {
+        const modal = document.getElementById('oneRMModal');
+        const container = document.getElementById('oneRMContainer');
+        
+        // Get unique exercises with their 1RM data
+        const exerciseMap = new Map();
+        trainingProgram.weeks.forEach(week => {
+            week.days.forEach(day => {
+                day.exercises.forEach(ex => {
+                    if (!exerciseMap.has(ex.name)) {
+                        exerciseMap.set(ex.name, {
+                            name: ex.name,
+                            currentRM: ex.currentRM,
+                            targetRM: ex.targetRM
+                        });
+                    }
+                });
+            });
+        });
+
+        // Load logged 1RMs
+        const logged1RMs = this.loadProgress('oneRepMaxTests') || {};
+
+        let html = `
+            <div style="overflow-x: auto;">
+                <table style="width: 100%; border-collapse: collapse; background: var(--card-bg); border-radius: 8px; overflow: hidden;">
+                    <thead>
+                        <tr style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white;">
+                            <th style="padding: 12px; text-align: left; border-bottom: 2px solid var(--border-color);">Exercise</th>
+                            <th style="padding: 12px; text-align: center; border-bottom: 2px solid var(--border-color);">Current 1RM</th>
+                            <th style="padding: 12px; text-align: center; border-bottom: 2px solid var(--border-color);">Target 1RM</th>
+                            <th style="padding: 12px; text-align: center; border-bottom: 2px solid var(--border-color);">Gap</th>
+                            <th style="padding: 12px; text-align: center; border-bottom: 2px solid var(--border-color);">Last Test</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+        `;
+
+        exerciseMap.forEach((data, name) => {
+            const gap = data.targetRM - data.currentRM;
+            const gapClass = gap > 0 ? 'gap-negative' : 'gap-positive';
+            const lastTest = logged1RMs[name];
+            const lastTestStr = lastTest ? `${lastTest.weight}kg (${new Date(lastTest.date).toLocaleDateString()})` : '-';
+            
+            html += `
+                <tr style="border-bottom: 1px solid var(--border-color);">
+                    <td style="padding: 12px; font-weight: 600;">${name}</td>
+                    <td style="padding: 12px; text-align: center;">${data.currentRM}kg</td>
+                    <td style="padding: 12px; text-align: center;">${data.targetRM}kg</td>
+                    <td style="padding: 12px; text-align: center;" class="${gapClass}">${gap > 0 ? '+' : ''}${gap}kg</td>
+                    <td style="padding: 12px; text-align: center; font-size: 0.9em;">${lastTestStr}</td>
+                </tr>
+            `;
+        });
+
+        html += `
+                    </tbody>
+                </table>
+            </div>
+        `;
+
+        container.innerHTML = html;
+        modal.style.display = 'block';
+    }
+
+    showOneRMTest() {
+        const modal = document.getElementById('oneRMTestModal');
+        const select = document.getElementById('exerciseSelect');
+        
+        // Populate exercise dropdown
+        const exerciseMap = new Map();
+        trainingProgram.weeks.forEach(week => {
+            week.days.forEach(day => {
+                day.exercises.forEach(ex => {
+                    if (!exerciseMap.has(ex.name)) {
+                        exerciseMap.set(ex.name, ex);
+                    }
+                });
+            });
+        });
+
+        select.innerHTML = '<option value="">-- Choose an exercise --</option>';
+        exerciseMap.forEach((ex, name) => {
+            const option = document.createElement('option');
+            option.value = name;
+            option.textContent = name;
+            select.appendChild(option);
+        });
+
+        // Hide warmup protocol initially
+        document.getElementById('warmupProtocol').style.display = 'none';
+        document.getElementById('achievedRM').value = '';
+        
+        modal.style.display = 'block';
+    }
+
+    onExerciseSelected(exerciseName) {
+        if (!exerciseName) {
+            document.getElementById('warmupProtocol').style.display = 'none';
+            return;
+        }
+
+        // Find exercise data
+        let exerciseData = null;
+        trainingProgram.weeks.forEach(week => {
+            week.days.forEach(day => {
+                const ex = day.exercises.find(e => e.name === exerciseName);
+                if (ex && !exerciseData) {
+                    exerciseData = ex;
+                }
+            });
+        });
+
+        if (!exerciseData) return;
+
+        // Generate warmup protocol based on current 1RM
+        const currentRM = exerciseData.currentRM;
+        const warmupSets = [
+            { weight: Math.round(currentRM * 0.4 / 2.5) * 2.5, reps: 8, rest: '1-2 min' },
+            { weight: Math.round(currentRM * 0.5 / 2.5) * 2.5, reps: 5, rest: '2 min' },
+            { weight: Math.round(currentRM * 0.6 / 2.5) * 2.5, reps: 3, rest: '2-3 min' },
+            { weight: Math.round(currentRM * 0.75 / 2.5) * 2.5, reps: 2, rest: '3 min' },
+            { weight: Math.round(currentRM * 0.85 / 2.5) * 2.5, reps: 1, rest: '3-4 min' },
+            { weight: Math.round(currentRM * 0.95 / 2.5) * 2.5, reps: 1, rest: '4-5 min' }
+        ];
+
+        let html = '<div style="line-height: 1.8;">';
+        warmupSets.forEach((set, index) => {
+            html += `
+                <div style="display: flex; justify-content: space-between; padding: 8px; ${index % 2 === 0 ? 'background: rgba(102, 126, 234, 0.05);' : ''} border-radius: 4px; margin-bottom: 4px;">
+                    <span style="font-weight: 600;">Set ${index + 1}:</span>
+                    <span>${set.weight}kg × ${set.reps} reps</span>
+                    <span style="color: var(--text-secondary); font-size: 0.9em;">Rest: ${set.rest}</span>
+                </div>
+            `;
+        });
+        html += '</div>';
+
+        document.getElementById('warmupSets').innerHTML = html;
+        document.getElementById('warmupProtocol').style.display = 'block';
+    }
+
+    saveOneRM() {
+        const exerciseName = document.getElementById('exerciseSelect').value;
+        const achievedRM = parseFloat(document.getElementById('achievedRM').value);
+
+        if (!exerciseName || !achievedRM || isNaN(achievedRM)) {
+            alert('Please select an exercise and enter a valid 1RM weight');
+            return;
+        }
+
+        // Load existing 1RM tests
+        const oneRMTests = this.loadProgress('oneRepMaxTests') || {};
+
+        // Save the test
+        oneRMTests[exerciseName] = {
+            weight: achievedRM,
+            date: new Date().toISOString()
+        };
+
+        this.saveProgress('oneRepMaxTests', oneRMTests);
+
+        // Update currentRM in the program data
+        trainingProgram.weeks.forEach(week => {
+            week.days.forEach(day => {
+                day.exercises.forEach(ex => {
+                    if (ex.name === exerciseName) {
+                        ex.currentRM = achievedRM;
+                    }
+                });
+            });
+        });
+
+        this.saveWorkoutData();
+
+        // Close test modal and refresh 1RM tracker
+        document.getElementById('oneRMTestModal').style.display = 'none';
+        this.showOneRMTracker();
+
+        alert(`✅ 1RM saved! ${exerciseName}: ${achievedRM}kg`);
+    }
+
     // Timer Functions
     startTimer() {
         if (!this.timerRunning) {
@@ -973,11 +1156,17 @@ class TrainingTracker {
         document.getElementById('summaryBtn').addEventListener('click', () => this.showWeeklySummary());
         document.getElementById('chartsBtn').addEventListener('click', () => this.showCharts());
         document.getElementById('achievementsBtn').addEventListener('click', () => this.showAchievements());
+        document.getElementById('oneRMBtn').addEventListener('click', () => this.showOneRMTracker());
         document.getElementById('darkModeToggle').addEventListener('click', () => this.toggleDarkMode());
         document.getElementById('menuBtn').addEventListener('click', () => this.showMenu());
         document.getElementById('exportBtn').addEventListener('click', () => this.exportData());
         document.getElementById('deloadBtn').addEventListener('click', () => this.deloadWeek());
         document.getElementById('resetBtn').addEventListener('click', () => this.reset());
+
+        // 1RM tracking
+        document.getElementById('logOneRMBtn').addEventListener('click', () => this.showOneRMTest());
+        document.getElementById('exerciseSelect').addEventListener('change', (e) => this.onExerciseSelected(e.target.value));
+        document.getElementById('saveOneRMBtn').addEventListener('click', () => this.saveOneRM());
 
         // Timer controls
         document.getElementById('timerStart').addEventListener('click', () => this.startTimer());
@@ -985,7 +1174,7 @@ class TrainingTracker {
         document.getElementById('timerReset').addEventListener('click', () => this.resetTimer());
 
         // Close modals
-        const modals = ['historyModal', 'summaryModal', 'chartsModal', 'achievementsModal', 'menuModal'];
+        const modals = ['historyModal', 'summaryModal', 'chartsModal', 'achievementsModal', 'menuModal', 'oneRMModal', 'oneRMTestModal'];
         modals.forEach(modalId => {
             const modal = document.getElementById(modalId);
             const closeBtn = modal.querySelector('.close');
