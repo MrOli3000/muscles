@@ -279,10 +279,14 @@ class TrainingTracker {
         const setRow = document.querySelector(`[data-exercise="${exerciseIndex}"][data-set="${setIndex}"]`);
         const weight = parseFloat(setRow.querySelector('.input-weight').value);
         const reps = parseInt(setRow.querySelector('.input-reps').value);
-        const rpe = parseFloat(setRow.querySelector('.input-rpe').value);
-        const rir = parseInt(setRow.querySelector('.input-rir').value);
+        const rpeInput = setRow.querySelector('.input-rpe').value;
+        const rirInput = setRow.querySelector('.input-rir').value;
+        
+        // Parse RPE and RIR, handling empty values properly
+        const rpe = rpeInput !== '' ? parseFloat(rpeInput) : null;
+        const rir = rirInput !== '' ? parseInt(rirInput) : null;
 
-        if (!weight || !reps) {
+        if (!weight || !reps || isNaN(weight) || isNaN(reps)) {
             alert('Please enter weight and reps');
             return;
         }
@@ -294,8 +298,8 @@ class TrainingTracker {
         set.completed = true;
         set.actualWeight = weight;
         set.actualReps = reps;
-        set.rpe = rpe || null;
-        set.rir = rir || null;
+        set.rpe = (rpe !== null && !isNaN(rpe)) ? rpe : null;
+        set.rir = (rir !== null && !isNaN(rir)) ? rir : null;
 
         // Add to history
         this.addToHistory({
@@ -306,9 +310,16 @@ class TrainingTracker {
             setType: set.type,
             weight: weight,
             reps: reps,
-            rpe: rpe,
-            rir: rir
+            rpe: (rpe !== null && !isNaN(rpe)) ? rpe : null,
+            rir: (rir !== null && !isNaN(rir)) ? rir : null
         });
+
+        // Show save animation on the button
+        const button = setRow.querySelector('.btn-complete');
+        button.classList.add('save-success');
+        setTimeout(() => {
+            button.classList.remove('save-success');
+        }, 600);
 
         // Save data and re-render WITHOUT changing day
         this.saveWorkoutData();
@@ -860,9 +871,9 @@ class TrainingTracker {
             startBtn.classList.add('running');
             
             this.timerInterval = setInterval(() => {
-                this.timerSeconds++;
+                this.timerSeconds += 100; // Increment by 100ms
                 this.updateTimerDisplay();
-            }, 1000);
+            }, 100); // Update every 100ms
         } else {
             this.pauseTimer();
         }
@@ -895,9 +906,11 @@ class TrainingTracker {
     }
 
     updateTimerDisplay() {
-        const minutes = Math.floor(this.timerSeconds / 60);
-        const seconds = this.timerSeconds % 60;
-        const display = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+        const totalMs = this.timerSeconds;
+        const minutes = Math.floor(totalMs / 60000);
+        const seconds = Math.floor((totalMs % 60000) / 1000);
+        const deciseconds = Math.floor((totalMs % 1000) / 100);
+        const display = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}.${deciseconds}`;
         document.getElementById('timerDisplay').textContent = display;
     }
 

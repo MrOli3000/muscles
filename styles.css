@@ -363,12 +363,19 @@ main {
 }
 
 .btn-complete {
+    padding: 6px 12px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
     border: none;
     border-radius: 6px;
     font-size: 0.95em;
     font-weight: 600;
     cursor: pointer;
     transition: all 0.3s ease;
+}
+
+.btn-complete:active {
+    transform: scale(0.95);
 }
 
 .navigation {
@@ -712,15 +719,34 @@ footer {
 
 /* Button Updates */
 .btn-completed {
-    background: #4caf50;
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%) !important;
     color: white;
     padding: 8px 16px;
     margin-left: auto;
-    cursor: default;
+    cursor: pointer;
 }
 
 .btn-completed:hover {
-    background: #4caf50;
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%) !important;
+}
+
+.btn-complete.save-success {
+    animation: saveSuccess 0.6s ease;
+}
+
+@keyframes saveSuccess {
+    0% {
+        transform: scale(1);
+        box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7);
+    }
+    50% {
+        transform: scale(1.05);
+        box-shadow: 0 0 0 10px rgba(16, 185, 129, 0);
+    }
+    100% {
+        transform: scale(1);
+        box-shadow: 0 0 0 0 rgba(16, 185, 129, 0);
+    }
 }
 
 /* Mobile Enhancements */
@@ -880,8 +906,9 @@ footer {
     font-weight: 700;
     color: var(--text-primary);
     font-size: 20px;
-    min-width: 70px;
+    min-width: 90px;
     text-align: center;
+    font-variant-numeric: tabular-nums;
 }
 
 .timer-controls {
