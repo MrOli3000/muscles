@@ -209,11 +209,18 @@ class TrainingTracker {
             }
         }
         
+        // Get target RPE/RIR for this specific set type
+        const targetRPE = exercise.targetRPE || 8;
+        const targetRIR = exercise.targetRIR || 2;
+        
+        // Show targets specific to set type
+        let targetsHTML = `<span style="font-size: 0.8em; color: #888; margin-left: 8px;">Target: RPE ${targetRPE}, RIR ${targetRIR}</span>`;
+        
         return `
             <div class="set-row ${completedClass}" data-exercise="${exerciseIndex}" data-set="${setIndex}">
                 <div class="set-info">
                     <span class="set-type">${set.type} ${setIndex + 1}</span>
-                    <span class="set-prescription">${set.weight}kg × ${set.reps} reps${suggestionHTML}</span>
+                    <span class="set-prescription">${set.weight}kg × ${set.reps} reps${suggestionHTML}${targetsHTML}</span>
                 </div>
                 <div class="set-inputs">
                     <div class="input-group">
@@ -782,19 +789,39 @@ class TrainingTracker {
         }
     }
 
-    // Swipe Navigation
+    // Swipe Navigation (disabled to prevent conflicts with zoom/scroll)
     initSwipeNavigation() {
+        // Swipe navigation disabled - use arrow buttons instead
+        // This prevents conflicts with pinch-zoom and scrolling
+        
+        // If you want to re-enable swipe navigation, uncomment below:
+        /*
         this.touchStartX = 0;
         this.touchEndX = 0;
+        this.touchStartY = 0;
         
         document.addEventListener('touchstart', e => {
-            this.touchStartX = e.changedTouches[0].screenX;
+            if (e.touches.length === 1) { // Only single finger
+                this.touchStartX = e.touches[0].screenX;
+                this.touchStartY = e.touches[0].screenY;
+            }
         }, { passive: true });
         
         document.addEventListener('touchend', e => {
-            this.touchEndX = e.changedTouches[0].screenX;
-            this.handleSwipe();
+            if (e.changedTouches.length === 1) { // Only single finger
+                this.touchEndX = e.changedTouches[0].screenX;
+                const touchEndY = e.changedTouches[0].screenY;
+                
+                // Only trigger if mostly horizontal swipe
+                const horizontalDiff = Math.abs(this.touchStartX - this.touchEndX);
+                const verticalDiff = Math.abs(this.touchStartY - touchEndY);
+                
+                if (horizontalDiff > verticalDiff * 2) {
+                    this.handleSwipe();
+                }
+            }
         }, { passive: true });
+        */
     }
 
     handleSwipe() {
@@ -803,10 +830,8 @@ class TrainingTracker {
         
         if (Math.abs(diff) > swipeThreshold) {
             if (diff > 0) {
-                // Swipe left - next day
                 this.nextDay();
             } else {
-                // Swipe right - previous day
                 this.prevDay();
             }
         }
